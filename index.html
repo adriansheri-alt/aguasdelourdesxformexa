@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aguas de Lourdes × Formexa — Panel de Colaboración</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --adl-navy: #1B2B5E;
+    --adl-blue: #2C4A9E;
+    --adl-cream: #F7F4EE;
+    --formexa-green: #1A5C38;
+    --formexa-green-dark: #003E16;
+    --formexa-red: #B21117;
+    --neutral-100: #F5F5F3;
+    --neutral-200: #E8E7E3;
+    --neutral-400: #BCBAB3;
+    --neutral-600: #6B6A65;
+    --neutral-800: #2C2C2A;
+    --white: #FFFFFF;
+    --status-open: #B85C00;
+    --status-open-bg: #FFF3E6;
+    --status-progress: #0A5C8A;
+    --status-progress-bg: #E6F3FA;
+    --status-done: #1A6B3C;
+    --status-done-bg: #E8F5EE;
+    --status-blocked: #8B1C1C;
+    --status-blocked-bg: #FAE8E8;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--neutral-100);
+    color: var(--neutral-800);
+    min-height: 100vh;
+  }
+
+  /* LOGIN */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--adl-navy);
+    background-image: radial-gradient(ellipse at 30% 70%, rgba(44,74,158,0.4) 0%, transparent 60%),
+                      radial-gradient(ellipse at 70% 20%, rgba(26,92,56,0.3) 0%, transparent 50%);
+  }
+
+  .login-box {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 48px 40px;
+    width: 400px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .login-logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+
+  .logo-adl {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--adl-navy);
+    letter-spacing: -0.3px;
+  }
+
+  .logo-sep {
+    width: 1px;
+    height: 28px;
+    background: var(--neutral-200);
+  }
+
+  .logo-formexa {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--formexa-green);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .login-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--neutral-800);
+    text-align: center;
+    margin: 20px 0 6px;
+  }
+
+  .login-sub {
+    font-size: 13px;
+    color: var(--neutral-600);
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .login-label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--neutral-600);
+    margin-bottom: 8px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .user-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .user-card {
+    border: 1.5px solid var(--neutral-200);
+    border-radius: var(--radius);
+    padding: 16px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .user-card:hover { border-color: var(--adl-blue); background: #F0F4FF; }
+  .user-card.selected { border-color: var(--adl-blue); background: #EEF2FF; }
+  .user-card.selected.formexa { border-color: var(--formexa-green); background: #EFF7F2; }
+
+  .user-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 8px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .icon-adl { background: #E6EAF5; color: var(--adl-navy); }
+  .icon-formexa { background: #E8F0EC; color: var(--formexa-green); }
+
+  .user-card-name { font-size: 13px; font-weight: 500; color: var(--neutral-800); }
+  .user-card-role { font-size: 11px; color: var(--neutral-600); margin-top: 2px; }
+
+  .login-input {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid var(--neutral-200);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--neutral-800);
+    background: var(--white);
+    outline: none;
+    transition: border-color 0.15s;
+    margin-bottom: 16px;
+  }
+
+  .login-input:focus { border-color: var(--adl-blue); }
+
+  .btn-login {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    background: var(--adl-navy);
+    color: var(--white);
+    transition: opacity 0.15s;
+  }
+
+  .btn-login:hover { opacity: 0.85; }
+
+  .login-error {
+    font-size: 12px;
+    color: var(--formexa-red);
+    text-align: center;
+    margin-top: 10px;
+    display: none;
+  }
+
+  /* MAIN APP */
+  #app { display: none; }
+
+  /* TOPBAR */
+  .topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--neutral-200);
+    padding: 0 32px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand-adl {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--adl-navy);
+  }
+
+  .brand-x {
+    font-size: 12px;
+    color: var(--neutral-400);
+  }
+
+  .brand-formexa {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--formexa-green);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .user-badge {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .badge-adl { background: #E6EAF5; color: var(--adl-navy); }
+  .badge-formexa { background: #E8F0EC; color: var(--formexa-green); }
+
+  .btn-logout {
+    font-size: 12px;
+    color: var(--neutral-600);
+    background: none;
+    border: 1px solid var(--neutral-200);
+    padding: 5px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-logout:hover { background: var(--neutral-100); }
+
+  /* LAYOUT */
+  .app-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: calc(100vh - 60px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--white);
+    border-right: 1px solid var(--neutral-200);
+    padding: 24px 16px;
+  }
+
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--neutral-400);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 0 8px;
+    margin-bottom: 8px;
+    margin-top: 20px;
+  }
+
+  .nav-section-label:first-child { margin-top: 0; }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border-radius: 7px;
+    font-size: 13.5px;
+    font-weight: 400;
+    color: var(--neutral-600);
+    cursor: pointer;
+    transition: all 0.12s;
+    margin-bottom: 2px;
+    user-select: none;
+  }
+
+  .nav-item:hover { background: var(--neutral-100); color: var(--neutral-800); }
+  .nav-item.active { background: #EEF2FF; color: var(--adl-blue); font-weight: 500; }
+  .nav-item.active.formexa-nav { background: #EFF7F2; color: var(--formexa-green); }
+
+  .nav-dot {
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    background: var(--neutral-300);
+  }
+
+  .nav-count {
+    margin-left: auto;
+    font-size: 11px;
+    background: var(--neutral-200);
+    color: var(--neutral-600);
+    padding: 1px 6px;
+    border-radius: 10px;
+    font-weight: 500;
+  }
+
+  /* MAIN CONTENT */
+  .main-content {
+    padding: 28px 32px;
+    overflow-y: auto;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* PAGE HEADER */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .page-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--neutral-800);
+  }
+
+  .page-sub {
+    font-size: 13px;
+    color: var(--neutral-600);
+    margin-top: 4px;
+  }
+
+  /* STATS ROW */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--neutral-600);
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 6px;
+  }
+
+  .stat-value {
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--neutral-800);
+    font-family: 'Playfair Display', serif;
+  }
+
+  .stat-sub { font-size: 11px; color: var(--neutral-600); margin-top: 2px; }
+
+  /* SECTION CARD */
+  .section-card {
+    background: var(--white);
+    border: 1px solid var(--neutral-200);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    overflow: hidden;
+  }
+
+  .section-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--neutral-200);
+  }
+
+  .section-card-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--neutral-800);
+  }
+
+  /* TASKS */
+  .task-list { padding: 8px 0; }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--neutral-100);
+    transition: background 0.1s;
+    cursor: pointer;
+  }
+
+  .task-item:last-child { border-bottom: none; }
+  .task-item:hover { background: #FAFAF8; }
+
+  .task-check {
+    width: 18px; height: 18px; border-radius: 4px;
+    border: 1.5px solid var(--neutral-300);
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all 0.12s;
+  }
+
+  .task-check:hover { border-color: var(--formexa-green); }
+  .task-check.checked { background: var(--formexa-green); border-color: var(--formexa-green); }
+  .task-check.checked::after { content: '✓'; font-size: 11px; color: white; }
+
+  .task-body { flex: 1; min-width: 0; }
+
+  .task-title {
+    font-size: 14px;
+    color: var(--neutral-800);
+    line-height: 1.4;
+  }
+
+  .task-title.done { text-decoration: line-through; color: var(--neutral-400); }
+
+  .task-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 5px;
+    flex-wrap: wrap;
+  }
+
+  .task-owner {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .owner-adl { background: #E6EAF5; color: var(--adl-navy); }
+  .owner-formexa { background: #E8F0EC; color: var(--formexa-green); }
+  .owner-ambos { background: #F0EAF5; color: #5C1B8E; }
+
+  .task-status {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .status-open { background: var(--status-open-bg); color: var(--status-open); }
+  .status-progress { background: var(--status-progress-bg); color: var(--status-progress); }
+  .status-done { background: var(--status-done-bg); color: var(--status-done); }
+  .status-blocked { background: var(--status-blocked-bg); color: var(--status-blocked); }
+
+  .task-date { font-size: 11px; color: var(--neutral-400); }
+
+  .task-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
+
+  .task-item:hover .task-actions { opacity: 1; }
+
+  .btn-icon {
+    background: none;
+    border: 1px solid var(--neutral-200);
+    border-radius: 5px;
+    width: 26px; height: 26px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--neutral-600);
+  }
+
+  .btn-icon:hover { background: var(--neutral-100); }
+
+  /* ADD TASK FORM */
+  .add-task-form {
+    padding: 16px 20px;
+    border-top: 1px solid var(--neutral-100);
+    background: #FAFAF8;
+    display: none;
+  }
+
+  .add-task-form.open { display: block; }
+
+  .form-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .form-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1.5px solid var(--neutral-200);
+    border-radius: 7px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--neutral-800);
+    background: var(--white);
+    outline: none;
+  }
+
+  .form-input:focus { border-color: var(--adl-blue); }
+
+  .form-select {
+    padding: 8px 10px;
+    border: 1.5px solid var(--neutral-200);
+    border-radius: 7px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--neutral-800);
+    background: var(--white);
+    outline: none;
+    cursor: pointer;
+  }
+
+  .btn-add {
+    padding: 8px 16px;
+    border-radius: 7px;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    background: var(--adl-navy);
+    color: var(--white);
+    white-space: nowrap;
+  }
+
+  .btn-add:hover { opacity: 0.85; }
+
+  .btn-cancel-form {
+    padding: 8px 12px;
+    border-radius: 7px;
+    border: 1px solid var(--neutral-200);
+    font-size: 13px;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    color: var(--neutral-600);
+  }
+
+  .btn-add-task-trigger {
+    font-size: 13px;
+    color: var(--neutral-600);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px 20px;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+  }
+
+  .btn-add-task-trigger:hover { color: var(--adl-blue); }
+
+  /* ACTIVITY LOG */
+  .activity-list { padding: 12px 20px; }
+
+  .activity-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--neutral-100);
+  }
+
+  .activity-item:last-child { border-bottom: none; }
+
+  .activity-avatar {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .avatar-adl { background: #E6EAF5; color: var(--adl-navy); }
+  .avatar-formexa { background: #E8F0EC; color: var(--formexa-green); }
+  .avatar-system { background: var(--neutral-200); color: var(--neutral-600); }
+
+  .activity-text { font-size: 13px; color: var(--neutral-800); line-height: 1.5; flex: 1; }
+  .activity-text strong { font-weight: 500; }
+  .activity-time { font-size: 11px; color: var(--neutral-400); margin-top: 2px; }
+
+  /* NOTE INPUT */
+  .note-input-area {
+    padding: 16px 20px;
+    border-top: 1px solid var(--neutral-100);
+    display: flex;
+    gap: 10px;
+  }
+
+  .note-textarea {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1.5px solid var(--neutral-200);
+    border-radius: 7px;
+    font-size: 13px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--neutral-800);
+    resize: none;
+    outline: none;
+    min-height: 60px;
+  }
+
+  .note-textarea:focus { border-color: var(--adl-blue); }
+
+  .btn-note {
+    padding: 10px 16px;
+    border-radius: 7px;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    background: var(--formexa-green);
+    color: var(--white);
+    align-self: flex-end;
+  }
+
+  .btn-note:hover { opacity: 0.85; }
+
+  /* DIVIDER */
+  .divider {
+    height: 1px;
+    background: var(--neutral-200);
+    margin: 8px 0;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    padding: 32px;
+    text-align: center;
+    color: var(--neutral-400);
+    font-size: 13px;
+  }
+
+  /* PRIORITY BADGE */
+  .priority-badge {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 6px;
+  }
+
+  .priority-high { background: var(--formexa-red); }
+  .priority-medium { background: #F59E0B; }
+  .priority-low { background: var(--neutral-400); }
+
+  /* HEADER ACTIONS */
+  .btn-primary {
+    padding: 8px 16px;
+    border-radius: 7px;
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    background: var(--adl-navy);
+    color: var(--white);
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+
+  /* OVERVIEW TIMELINE */
+  .timeline-item {
+    display: flex;
+    gap: 14px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--neutral-100);
+  }
+
+  .timeline-item:last-child { border-bottom: none; }
+
+  .timeline-date {
+    font-size: 11px;
+    color: var(--neutral-400);
+    width: 90px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+
+  .timeline-content { flex: 1; }
+
+  .timeline-title {
+    font-size: 13.5px;
+    color: var(--neutral-800);
+    font-weight: 500;
+  }
+
+  .timeline-body {
+    font-size: 13px;
+    color: var(--neutral-600);
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    display: none;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 28px;
+    width: 480px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+  }
+
+  .modal-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: var(--neutral-800);
+  }
+
+  .form-group { margin-bottom: 14px; }
+  .form-label { font-size: 12px; font-weight: 500; color: var(--neutral-600); display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.4px; }
+
+  .form-input-full {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--neutral-200);
+    border-radius: 7px;
+    font-size: 13.5px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--neutral-800);
+    background: var(--white);
+    outline: none;
+  }
+
+  .form-input-full:focus { border-color: var(--adl-blue); }
+
+  .form-textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--neutral-200);
+    border-radius: 7px;
+    font-size: 13.5px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--neutral-800);
+    background: var(--white);
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  .form-textarea:focus { border-color: var(--adl-blue); }
+
+  .form-select-full {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1.5px solid var(--neutral-200);
+    border-radius: 7px;
+    font-size: 13.5px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--neutral-800);
+    background: var(--white);
+    outline: none;
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* NOTIFICATION */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--neutral-800);
+    color: var(--white);
+    padding: 12px 18px;
+    border-radius: 8px;
+    font-size: 13px;
+    z-index: 2000;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.2s;
+    pointer-events: none;
+  }
+
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--neutral-300, #ccc); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <span class="logo-adl">Aguas de Lourdes</span>
+      <div class="logo-sep"></div>
+      <span class="logo-formexa">Formexa</span>
+    </div>
+    <p class="login-title">Panel de Colaboración</p>
+    <p class="login-sub">Distribución exclusiva EE.UU. — Acceso seguro</p>
+
+    <span class="login-label">Selecciona tu empresa</span>
+    <div class="user-cards">
+      <div class="user-card" id="card-adl" onclick="selectUser('ADL')">
+        <div class="user-card-icon icon-adl">ADL</div>
+        <div class="user-card-name">Aguas de Lourdes</div>
+        <div class="user-card-role">Fabricante / Marca</div>
+      </div>
+      <div class="user-card formexa" id="card-formexa" onclick="selectUser('FORMEXA')">
+        <div class="user-card-icon icon-formexa">FX</div>
+        <div class="user-card-name">Formexa</div>
+        <div class="user-card-role">Distribuidor Exclusivo</div>
+      </div>
+    </div>
+
+    <span class="login-label">Contraseña de acceso</span>
+    <input type="password" class="login-input" id="login-pass" placeholder="Ingresa tu contraseña" onkeydown="if(event.key==='Enter') doLogin()">
+
+    <button class="btn-login" onclick="doLogin()">Ingresar al panel →</button>
+    <p class="login-error" id="login-error">Usuario o contraseña incorrectos.</p>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <span class="brand-adl">Aguas de Lourdes</span>
+      <span class="brand-x">×</span>
+      <span class="brand-formexa">Formexa</span>
+    </div>
+    <div class="topbar-right">
+      <div class="user-badge" id="user-badge">
+        <span id="user-badge-text"></span>
+      </div>
+      <button class="btn-logout" onclick="doLogout()">Salir</button>
+    </div>
+  </div>
+
+  <div class="app-layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="nav-section-label">Navegación</div>
+      <div class="nav-item active" id="nav-overview" onclick="showPage('overview')">
+        <div class="nav-dot" style="background:#2C4A9E"></div>
+        Resumen general
+      </div>
+      <div class="nav-item" id="nav-tasks" onclick="showPage('tasks')">
+        <div class="nav-dot" style="background:#B85C00"></div>
+        Pendientes
+        <span class="nav-count" id="tasks-count">0</span>
+      </div>
+      <div class="nav-item" id="nav-minutes" onclick="showPage('minutes')">
+        <div class="nav-dot" style="background:#0A5C8A"></div>
+        Minutas
+      </div>
+      <div class="nav-item" id="nav-activity" onclick="showPage('activity')">
+        <div class="nav-dot" style="background:#1A6B3C"></div>
+        Actividad
+      </div>
+
+      <div class="nav-section-label">Proyecto</div>
+      <div class="nav-item" id="nav-roadmap" onclick="showPage('roadmap')">
+        <div class="nav-dot" style="background:#5C1B8E"></div>
+        Roadmap de lanzamiento
+      </div>
+      <div class="nav-item" id="nav-contacts" onclick="showPage('contacts')">
+        <div class="nav-dot" style="background:#6B6A65"></div>
+        Contactos clave
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main-content">
+
+      <!-- OVERVIEW -->
+      <div class="page active" id="page-overview">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Resumen general</div>
+            <div class="page-sub">Distribución exclusiva Aguas de Lourdes en EE.UU.</div>
+          </div>
+          <button class="btn-primary" onclick="showPage('tasks')">Ver todos los pendientes →</button>
+        </div>
+
+        <div class="stats-row" id="stats-row"></div>
+
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+          <div class="section-card">
+            <div class="section-card-header">
+              <span class="section-card-title">Próximos pasos críticos</span>
+              <span style="font-size:11px; color:var(--neutral-400)">Alta prioridad</span>
+            </div>
+            <div id="critical-tasks-list" class="task-list"></div>
+          </div>
+          <div class="section-card">
+            <div class="section-card-header">
+              <span class="section-card-title">Actividad reciente</span>
+            </div>
+            <div id="recent-activity-list" class="activity-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TASKS -->
+      <div class="page" id="page-tasks">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Pendientes y siguientes pasos</div>
+            <div class="page-sub">Actualización diaria — todos pueden editar</div>
+          </div>
+          <button class="btn-primary" onclick="openAddModal()">+ Agregar tarea</button>
+        </div>
+
+        <div class="section-card" id="tasks-open-card">
+          <div class="section-card-header">
+            <span class="section-card-title">Abiertas y en proceso</span>
+            <div style="display:flex; gap:8px">
+              <select class="form-select" id="filter-owner" onchange="renderTasks()" style="font-size:12px; padding:5px 8px;">
+                <option value="">Todos</option>
+                <option value="ADL">ADL</option>
+                <option value="FORMEXA">Formexa</option>
+                <option value="AMBOS">Ambos</option>
+              </select>
+            </div>
+          </div>
+          <div id="tasks-list" class="task-list"></div>
+          <div id="add-task-section">
+            <button class="btn-add-task-trigger" onclick="toggleAddInline()">+ Agregar tarea rápida</button>
+            <div class="add-task-form" id="inline-add-form">
+              <div class="form-row">
+                <input class="form-input" id="quick-task-text" placeholder="Descripción de la tarea...">
+                <select class="form-select" id="quick-owner">
+                  <option value="AMBOS">Ambos</option>
+                  <option value="ADL">ADL</option>
+                  <option value="FORMEXA">Formexa</option>
+                </select>
+                <select class="form-select" id="quick-priority">
+                  <option value="high">Alta</option>
+                  <option value="medium">Media</option>
+                  <option value="low">Baja</option>
+                </select>
+                <select class="form-select" id="quick-status">
+                  <option value="open">Abierto</option>
+                  <option value="progress">En proceso</option>
+                  <option value="blocked">Bloqueado</option>
+                </select>
+                <button class="btn-add" onclick="addQuickTask()">Agregar</button>
+                <button class="btn-cancel-form" onclick="toggleAddInline()">×</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <span class="section-card-title">Completadas</span>
+          </div>
+          <div id="tasks-done-list" class="task-list"></div>
+          <div id="done-empty" class="empty-state">Sin tareas completadas aún.</div>
+        </div>
+      </div>
+
+      <!-- MINUTES -->
+      <div class="page" id="page-minutes">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Minutas de reunión</div>
+            <div class="page-sub">Registro de acuerdos y seguimiento</div>
+          </div>
+          <button class="btn-primary" onclick="openMinuteModal()">+ Nueva minuta</button>
+        </div>
+        <div class="section-card">
+          <div id="minutes-list" style="padding: 8px 0;"></div>
+          <div id="minutes-empty" class="empty-state">Sin minutas registradas. Agrega la primera reunión.</div>
+        </div>
+      </div>
+
+      <!-- ACTIVITY -->
+      <div class="page" id="page-activity">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Registro de actividad</div>
+            <div class="page-sub">Historial completo de actualizaciones</div>
+          </div>
+        </div>
+        <div class="section-card">
+          <div class="note-input-area">
+            <textarea class="note-textarea" id="note-text" placeholder="Escribe una nota o actualización de estado..."></textarea>
+            <button class="btn-note" onclick="addNote()">Publicar nota</button>
+          </div>
+          <div class="divider"></div>
+          <div id="full-activity-list" class="activity-list"></div>
+        </div>
+      </div>
+
+      <!-- ROADMAP -->
+      <div class="page" id="page-roadmap">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Roadmap de lanzamiento</div>
+            <div class="page-sub">Plan de entrada por fases — EE.UU.</div>
+          </div>
+        </div>
+        <div id="roadmap-content"></div>
+      </div>
+
+      <!-- CONTACTS -->
+      <div class="page" id="page-contacts">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Contactos clave</div>
+            <div class="page-sub">Equipo Aguas de Lourdes × Formexa</div>
+          </div>
+        </div>
+        <div id="contacts-content" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADD TASK MODAL -->
+<div class="modal-overlay" id="add-modal">
+  <div class="modal">
+    <div class="modal-title">Nueva tarea</div>
+    <div class="form-group">
+      <label class="form-label">Descripción</label>
+      <textarea class="form-textarea" id="modal-task-text" placeholder="¿Qué hay que hacer?"></textarea>
+    </div>
+    <div class="two-col">
+      <div class="form-group">
+        <label class="form-label">Responsable</label>
+        <select class="form-select-full" id="modal-owner">
+          <option value="AMBOS">Ambos</option>
+          <option value="ADL">Aguas de Lourdes</option>
+          <option value="FORMEXA">Formexa</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Estado</label>
+        <select class="form-select-full" id="modal-status">
+          <option value="open">Abierto</option>
+          <option value="progress">En proceso</option>
+          <option value="blocked">Bloqueado</option>
+        </select>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="form-group">
+        <label class="form-label">Prioridad</label>
+        <select class="form-select-full" id="modal-priority">
+          <option value="high">Alta</option>
+          <option value="medium">Media</option>
+          <option value="low">Baja</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Fecha límite (opcional)</label>
+        <input type="date" class="form-input-full" id="modal-due">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Notas adicionales</label>
+      <textarea class="form-textarea" id="modal-notes" placeholder="Contexto, detalles, links..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel-form" style="padding:9px 16px" onclick="closeModal('add-modal')">Cancelar</button>
+      <button class="btn-primary" onclick="addModalTask()">Guardar tarea</button>
+    </div>
+  </div>
+</div>
+
+<!-- MINUTE MODAL -->
+<div class="modal-overlay" id="minute-modal">
+  <div class="modal" style="width: 560px;">
+    <div class="modal-title">Nueva minuta</div>
+    <div class="two-col">
+      <div class="form-group">
+        <label class="form-label">Fecha de reunión</label>
+        <input type="date" class="form-input-full" id="minute-date">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Tipo</label>
+        <select class="form-select-full" id="minute-type">
+          <option>Revisión semanal</option>
+          <option>Kick-off</option>
+          <option>Negociación</option>
+          <option>Seguimiento cliente</option>
+          <option>Llamada de equipo</option>
+          <option>Otro</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Temas tratados</label>
+      <textarea class="form-textarea" id="minute-topics" style="min-height: 90px;" placeholder="Puntos discutidos en la reunión..."></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Acuerdos y compromisos</label>
+      <textarea class="form-textarea" id="minute-agreements" style="min-height: 90px;" placeholder="¿A qué se comprometió cada parte?"></textarea>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Participantes</label>
+      <input type="text" class="form-input-full" id="minute-participants" placeholder="Ej: José Manuel (ADL), Alejandro (Formexa)">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel-form" style="padding:9px 16px" onclick="closeModal('minute-modal')">Cancelar</button>
+      <button class="btn-primary" onclick="saveMinute()">Guardar minuta</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+const PASSWORDS = { ADL: 'lourdes2026', FORMEXA: 'formexa2026' };
+let currentUser = null;
+let selectedUserCard = null;
+let data = {};
+
+const DEFAULT_DATA = {
+  tasks: [
+    { id: 1, text: 'Confirmar precio de salida $125 MXN/caja con fábrica', owner: 'ADL', status: 'open', priority: 'high', due: '', notes: 'Pedido formal: reducción de $22.30 MXN vs precio actual ($147.30)', createdBy: 'FORMEXA', createdAt: new Date().toISOString(), done: false },
+    { id: 2, text: 'Definir cantidad y timing de entrega de 200 racks iniciales + material POP', owner: 'ADL', status: 'open', priority: 'high', due: '', notes: 'Plan: 50 racks/mes, primero Texas', createdBy: 'FORMEXA', createdAt: new Date().toISOString(), done: false },
+    { id: 3, text: 'Confirmar disponibilidad de inventario para arranque Mes 0 (2.5 camiones)', owner: 'ADL', status: 'open', priority: 'high', due: '', notes: 'Cada camión = 3,750 cajas = 45,000 botellas 355ml', createdBy: 'FORMEXA', createdAt: new Date().toISOString(), done: false },
+    { id: 4, text: 'Enviar muestras físicas del producto para presentación a cuentas clave Texas', owner: 'ADL', status: 'progress', priority: 'high', due: '', notes: 'Prioridad: H-E-B, Excel Grocery, Grocers Supply', createdBy: 'FORMEXA', createdAt: new Date().toISOString(), done: false },
+    { id: 5, text: 'Agendar llamada con equipo de campo RSM East Zone (Luis Miguel Pérez) para primer recorrido Texas', owner: 'FORMEXA', status: 'open', priority: 'medium', due: '', notes: 'Alejandro Aguirre coordina', createdBy: 'FORMEXA', createdAt: new Date().toISOString(), done: false },
+    { id: 6, text: 'Firmar contrato de distribución exclusiva — versión final', owner: 'AMBOS', status: 'progress', priority: 'high', due: '', notes: 'Documento en revisión. No-negociables: cartera de clientes + cap de precio', createdBy: 'FORMEXA', createdAt: new Date().toISOString(), done: false },
+    { id: 7, text: 'Compartir ficha técnica y especificaciones FDA del producto para gestión aduanal', owner: 'ADL', status: 'open', priority: 'medium', due: '', notes: 'RL Jones (Laredo) requiere documentación completa antes del primer cruce', createdBy: 'FORMEXA', createdAt: new Date().toISOString(), done: false },
+    { id: 8, text: 'Confirmar logística de arranque con Dracko (Jorge Gutiérrez) — primer mes Texas', owner: 'FORMEXA', status: 'open', priority: 'medium', due: '', notes: 'Estrategia de brand building, displays y eventos de introducción', createdBy: 'FORMEXA', createdAt: new Date().toISOString(), done: false },
+  ],
+  activity: [
+    { id: 1, user: 'SYSTEM', text: 'Panel de colaboración iniciado. Distribución exclusiva ADL × Formexa — EE.UU.', time: new Date().toISOString() },
+  ],
+  minutes: [],
+  nextTaskId: 9,
+  nextActivityId: 2,
+  nextMinuteId: 1,
+};
+
+function loadData() {
+  const saved = localStorage.getItem('adl_formexa_v2');
+  data = saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+
+function saveData() {
+  localStorage.setItem('adl_formexa_v2', JSON.stringify(data));
+}
+
+function selectUser(u) {
+  selectedUserCard = u;
+  document.getElementById('card-adl').classList.remove('selected');
+  document.getElementById('card-formexa').classList.remove('selected');
+  document.getElementById(u === 'ADL' ? 'card-adl' : 'card-formexa').classList.add('selected');
+}
+
+function doLogin() {
+  const pass = document.getElementById('login-pass').value;
+  const err = document.getElementById('login-error');
+  if (!selectedUserCard) { err.style.display='block'; err.textContent='Selecciona una empresa primero.'; return; }
+  if (pass !== PASSWORDS[selectedUserCard]) { err.style.display='block'; err.textContent='Contraseña incorrecta.'; return; }
+  err.style.display='none';
+  currentUser = selectedUserCard;
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  const badge = document.getElementById('user-badge');
+  const badgeText = document.getElementById('user-badge-text');
+  if (currentUser === 'ADL') { badge.className='user-badge badge-adl'; badgeText.textContent='Aguas de Lourdes'; }
+  else { badge.className='user-badge badge-formexa'; badgeText.textContent='Formexa'; }
+  addActivity(`${currentUser === 'ADL' ? 'Aguas de Lourdes' : 'Formexa'} ingresó al panel.`, currentUser);
+  renderAll();
+}
+
+function doLogout() {
+  currentUser = null;
+  selectedUserCard = null;
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+  document.getElementById('login-pass').value='';
+  document.getElementById('card-adl').classList.remove('selected');
+  document.getElementById('card-formexa').classList.remove('selected');
+}
+
+function showPage(p) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  document.getElementById('nav-'+p).classList.add('active');
+}
+
+function renderAll() {
+  renderStats();
+  renderTasks();
+  renderCriticalTasks();
+  renderRecentActivity();
+  renderFullActivity();
+  renderMinutes();
+  renderRoadmap();
+  renderContacts();
+  updateTasksCount();
+}
+
+function renderStats() {
+  const open = data.tasks.filter(t => !t.done && t.status !== 'blocked').length;
+  const blocked = data.tasks.filter(t => t.status === 'blocked' && !t.done).length;
+  const done = data.tasks.filter(t => t.done).length;
+  const adl = data.tasks.filter(t => !t.done && t.owner === 'ADL').length;
+  document.getElementById('stats-row').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Pendientes abiertos</div><div class="stat-value">${open}</div><div class="stat-sub">Activos actualmente</div></div>
+    <div class="stat-card"><div class="stat-label">Responsabilidad ADL</div><div class="stat-value">${adl}</div><div class="stat-sub">Tareas de ADL</div></div>
+    <div class="stat-card"><div class="stat-label">Bloqueados</div><div class="stat-value" style="color:var(--formexa-red)">${blocked}</div><div class="stat-sub">Requieren atención</div></div>
+    <div class="stat-card"><div class="stat-label">Completados</div><div class="stat-value" style="color:var(--formexa-green)">${done}</div><div class="stat-sub">Total histórico</div></div>
+  `;
+}
+
+function updateTasksCount() {
+  document.getElementById('tasks-count').textContent = data.tasks.filter(t => !t.done).length;
+}
+
+function statusLabel(s) {
+  const m = { open: 'Abierto', progress: 'En proceso', done: 'Hecho', blocked: 'Bloqueado' };
+  return m[s] || s;
+}
+
+function ownerLabel(o) {
+  const m = { ADL: 'Aguas de Lourdes', FORMEXA: 'Formexa', AMBOS: 'Ambos' };
+  return m[o] || o;
+}
+
+function taskHTML(t, showCheck = true) {
+  const ownerClass = t.owner === 'ADL' ? 'owner-adl' : t.owner === 'FORMEXA' ? 'owner-formexa' : 'owner-ambos';
+  const statusClass = 'status-' + (t.done ? 'done' : t.status);
+  const statusText = t.done ? 'Completado' : statusLabel(t.status);
+  const priorityClass = 'priority-' + (t.priority || 'medium');
+  const dateStr = t.due ? `<span class="task-date">Fecha: ${t.due}</span>` : '';
+  const checkClass = t.done ? 'task-check checked' : 'task-check';
+  const titleClass = t.done ? 'task-title done' : 'task-title';
+  return `
+    <div class="task-item" id="task-${t.id}">
+      ${showCheck ? `<div class="${checkClass}" onclick="toggleDone(${t.id})"></div>` : ''}
+      <div class="priority-badge ${priorityClass}"></div>
+      <div class="task-body">
+        <div class="${titleClass}">${t.text}</div>
+        ${t.notes ? `<div style="font-size:12px; color:var(--neutral-600); margin-top:3px;">${t.notes}</div>` : ''}
+        <div class="task-meta">
+          <span class="task-owner ${ownerClass}">${ownerLabel(t.owner)}</span>
+          <span class="task-status ${statusClass}">${statusText}</span>
+          ${dateStr}
+        </div>
+      </div>
+      <div class="task-actions">
+        ${!t.done ? `<button class="btn-icon" onclick="cycleStatus(${t.id})" title="Cambiar estado">↺</button>` : ''}
+        <button class="btn-icon" onclick="deleteTask(${t.id})" title="Eliminar">×</button>
+      </div>
+    </div>`;
+}
+
+function renderTasks() {
+  const filter = document.getElementById('filter-owner')?.value || '';
+  let active = data.tasks.filter(t => !t.done);
+  if (filter) active = active.filter(t => t.owner === filter);
+  let done = data.tasks.filter(t => t.done);
+
+  const list = document.getElementById('tasks-list');
+  if (list) list.innerHTML = active.length ? active.map(t => taskHTML(t)).join('') : '<div class="empty-state">Sin tareas activas.</div>';
+
+  const doneList = document.getElementById('tasks-done-list');
+  const doneEmpty = document.getElementById('done-empty');
+  if (doneList) {
+    doneList.innerHTML = done.map(t => taskHTML(t)).join('');
+    if (doneEmpty) doneEmpty.style.display = done.length ? 'none' : 'block';
+  }
+}
+
+function renderCriticalTasks() {
+  const critical = data.tasks.filter(t => !t.done && t.priority === 'high').slice(0, 4);
+  const el = document.getElementById('critical-tasks-list');
+  if (el) el.innerHTML = critical.length ? critical.map(t => taskHTML(t, false)).join('') : '<div class="empty-state">Sin tareas críticas pendientes.</div>';
+}
+
+function toggleDone(id) {
+  const t = data.tasks.find(t => t.id === id);
+  if (!t) return;
+  t.done = !t.done;
+  t.status = t.done ? 'done' : 'open';
+  if (t.done) addActivity(`"${t.text.substring(0,60)}..." marcada como completada.`, currentUser, false);
+  saveData(); renderAll();
+  showToast(t.done ? '✓ Tarea completada' : 'Tarea reabierta');
+}
+
+function cycleStatus(id) {
+  const t = data.tasks.find(t => t.id === id);
+  if (!t) return;
+  const cycle = ['open', 'progress', 'blocked'];
+  const i = cycle.indexOf(t.status);
+  t.status = cycle[(i + 1) % cycle.length];
+  addActivity(`Estado de "${t.text.substring(0,50)}..." actualizado a "${statusLabel(t.status)}".`, currentUser, false);
+  saveData(); renderAll();
+  showToast('Estado actualizado: ' + statusLabel(t.status));
+}
+
+function deleteTask(id) {
+  if (!confirm('¿Eliminar esta tarea?')) return;
+  data.tasks = data.tasks.filter(t => t.id !== id);
+  saveData(); renderAll();
+  showToast('Tarea eliminada');
+}
+
+function toggleAddInline() {
+  const f = document.getElementById('inline-add-form');
+  f.classList.toggle('open');
+  if (f.classList.contains('open')) document.getElementById('quick-task-text').focus();
+}
+
+function addQuickTask() {
+  const text = document.getElementById('quick-task-text').value.trim();
+  if (!text) return;
+  const owner = document.getElementById('quick-owner').value;
+  const priority = document.getElementById('quick-priority').value;
+  const status = document.getElementById('quick-status').value;
+  const task = { id: data.nextTaskId++, text, owner, status, priority, due: '', notes: '', createdBy: currentUser, createdAt: new Date().toISOString(), done: false };
+  data.tasks.unshift(task);
+  addActivity(`Nueva tarea agregada: "${text.substring(0,60)}..."`, currentUser, false);
+  saveData(); renderAll();
+  document.getElementById('quick-task-text').value = '';
+  document.getElementById('inline-add-form').classList.remove('open');
+  showToast('Tarea agregada');
+}
+
+function openAddModal() {
+  document.getElementById('add-modal').classList.add('open');
+  document.getElementById('modal-task-text').focus();
+}
+
+function addModalTask() {
+  const text = document.getElementById('modal-task-text').value.trim();
+  if (!text) return;
+  const task = {
+    id: data.nextTaskId++,
+    text,
+    owner: document.getElementById('modal-owner').value,
+    status: document.getElementById('modal-status').value,
+    priority: document.getElementById('modal-priority').value,
+    due: document.getElementById('modal-due').value,
+    notes: document.getElementById('modal-notes').value.trim(),
+    createdBy: currentUser,
+    createdAt: new Date().toISOString(),
+    done: false
+  };
+  data.tasks.unshift(task);
+  addActivity(`Nueva tarea: "${text.substring(0,60)}"`, currentUser, false);
+  saveData(); renderAll();
+  closeModal('add-modal');
+  document.getElementById('modal-task-text').value = '';
+  document.getElementById('modal-notes').value = '';
+  document.getElementById('modal-due').value = '';
+  showToast('Tarea guardada');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+function addActivity(text, user, save = true) {
+  data.activity.unshift({ id: data.nextActivityId++, user: user || currentUser || 'SYSTEM', text, time: new Date().toISOString() });
+  if (data.activity.length > 100) data.activity.pop();
+  if (save) saveData();
+}
+
+function activityHTML(a) {
+  const userMap = { ADL: 'ADL', FORMEXA: 'FX', SYSTEM: '★' };
+  const classMap = { ADL: 'avatar-adl', FORMEXA: 'avatar-formexa', SYSTEM: 'avatar-system' };
+  const nameMap = { ADL: 'Aguas de Lourdes', FORMEXA: 'Formexa', SYSTEM: 'Sistema' };
+  const initials = userMap[a.user] || '?';
+  const cls = classMap[a.user] || 'avatar-system';
+  const name = nameMap[a.user] || a.user;
+  const timeStr = new Date(a.time).toLocaleString('es-MX', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' });
+  return `
+    <div class="activity-item">
+      <div class="activity-avatar ${cls}">${initials}</div>
+      <div>
+        <div class="activity-text"><strong>${name}</strong> — ${a.text}</div>
+        <div class="activity-time">${timeStr}</div>
+      </div>
+    </div>`;
+}
+
+function renderRecentActivity() {
+  const el = document.getElementById('recent-activity-list');
+  if (el) el.innerHTML = data.activity.slice(0,5).map(activityHTML).join('');
+}
+
+function renderFullActivity() {
+  const el = document.getElementById('full-activity-list');
+  if (el) el.innerHTML = data.activity.map(activityHTML).join('') || '<div class="empty-state">Sin actividad registrada.</div>';
+}
+
+function addNote() {
+  const text = document.getElementById('note-text').value.trim();
+  if (!text) return;
+  addActivity(text, currentUser);
+  saveData(); renderAll();
+  document.getElementById('note-text').value = '';
+  showToast('Nota publicada');
+}
+
+function openMinuteModal() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('minute-date').value = today;
+  document.getElementById('minute-modal').classList.add('open');
+}
+
+function saveMinute() {
+  const topics = document.getElementById('minute-topics').value.trim();
+  if (!topics) return;
+  const minute = {
+    id: data.nextMinuteId++,
+    date: document.getElementById('minute-date').value,
+    type: document.getElementById('minute-type').value,
+    topics,
+    agreements: document.getElementById('minute-agreements').value.trim(),
+    participants: document.getElementById('minute-participants').value.trim(),
+    createdBy: currentUser,
+    createdAt: new Date().toISOString()
+  };
+  data.minutes.unshift(minute);
+  addActivity(`Nueva minuta registrada: "${minute.type}" — ${minute.date}`, currentUser, false);
+  saveData(); renderAll();
+  closeModal('minute-modal');
+  ['minute-topics','minute-agreements','minute-participants'].forEach(id => document.getElementById(id).value='');
+  showToast('Minuta guardada');
+}
+
+function renderMinutes() {
+  const el = document.getElementById('minutes-list');
+  const empty = document.getElementById('minutes-empty');
+  if (!el) return;
+  if (!data.minutes.length) { el.innerHTML=''; if(empty) empty.style.display='block'; return; }
+  if (empty) empty.style.display='none';
+  el.innerHTML = data.minutes.map(m => `
+    <div class="timeline-item">
+      <div class="timeline-date">${m.date}<br><span style="color:var(--neutral-400); font-size:10px">${m.type}</span></div>
+      <div class="timeline-content">
+        <div class="timeline-title">${m.type} — ${m.participants || 'Equipo ADL × Formexa'}</div>
+        <div class="timeline-body"><strong>Temas:</strong> ${m.topics}</div>
+        ${m.agreements ? `<div class="timeline-body" style="margin-top:4px"><strong>Acuerdos:</strong> ${m.agreements}</div>` : ''}
+        <div style="margin-top:6px; font-size:11px; color:var(--neutral-400)">Registrado por ${m.createdBy === 'ADL' ? 'Aguas de Lourdes' : 'Formexa'}</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderRoadmap() {
+  const el = document.getElementById('roadmap-content');
+  if (!el) return;
+  const phases = [
+    { name: 'Fase 0 — Arranque', zone: 'Texas (Houston, Dallas, San Antonio, Amarillo)', clients: 'H-E-B · Walmart · Kroger · Excel Grocery (La Michoacana, El Ahorro) · Grocers Supply (Fiesta, Foodarama) · AWG Kansas (United, El Rancho, Brookshires)', volume: '2.5 camiones totales', color: '#1B2B5E' },
+    { name: 'Fase 1 — Expansión', zone: 'Arizona + California (L.A., San Diego, Stockton, Vacaville)', clients: 'Northgate · UNFI · Food 4 Less · Unified Western (Superior, Bodega Latina, Cardenas, Vallarta, Stater Bros) · Chavez Markets · Smart & Final', volume: '+5.0 camiones/mes', color: '#2C4A9E' },
+    { name: 'Fase 2 — Costa Este + Chicago', zone: 'Florida · NY/NJ/PA · Atlanta/Carolinas · Chicago', clients: 'Publix · Sedano\'s · Winn-Dixie · ShopRite · Bravo · C-Town · Key Food · Jewel-Osco · Cermak · El Encanto · Diaz Foods · Food Lion', volume: '+7.5–12.5 camiones/mes', color: '#1A5C38' },
+  ];
+  el.innerHTML = phases.map((p, i) => `
+    <div class="section-card" style="margin-bottom: 16px;">
+      <div class="section-card-header" style="background: ${p.color}12;">
+        <div>
+          <span class="section-card-title" style="color:${p.color}">${p.name}</span>
+          <div style="font-size:12px; color:var(--neutral-600); margin-top:2px">${p.zone}</div>
+        </div>
+        <span style="font-size:12px; font-weight:600; color:${p.color}; background:${p.color}15; padding:4px 12px; border-radius:20px">${p.volume}</span>
+      </div>
+      <div style="padding:14px 20px; font-size:13px; color:var(--neutral-600); line-height:1.7"><strong style="color:var(--neutral-800)">Cuentas objetivo:</strong> ${p.clients}</div>
+    </div>`).join('');
+}
+
+function renderContacts() {
+  const el = document.getElementById('contacts-content');
+  if (!el) return;
+  const contacts = [
+    { team: 'ADL', name: 'José Manuel', role: 'Dirección / Socio principal ADL', info: 'Contacto principal de negociación' },
+    { team: 'FORMEXA', name: 'Alejandro Aguirre', role: 'Director Comercial EE.UU.', info: 'Coordinación estratégica y cuentas clave' },
+    { team: 'FORMEXA', name: 'Rubén Fernández', role: 'Logística y Operaciones', info: 'Cruce Laredo, 3PL, abasto hacia EE.UU.' },
+    { team: 'FORMEXA', name: 'Yair Durán', role: 'Gerente de Compras', info: 'Gestión de inventario y abasto con ADL' },
+    { team: 'FORMEXA', name: 'Fernanda Mansilla', role: 'Brand Strategy & Marketing', info: 'Materiales, coordinación con Dracko' },
+    { team: 'EXTERNO', name: 'Jorge Gutiérrez (Dracko)', role: 'Socio estratégico de marketing', info: '25+ años mercado hispano, 27 estados' },
+    { team: 'EXTERNO', name: 'Luis Miguel Pérez', role: 'RSM — East Zone', info: 'TX, FL, GA, Este — 25+ años' },
+    { team: 'EXTERNO', name: 'Hector González (Tolín)', role: 'RSM — West Zone', info: 'CA, AZ, NV, Oeste — 20+ años' },
+  ];
+  const teamColor = { ADL: 'var(--adl-navy)', FORMEXA: 'var(--formexa-green)', EXTERNO: 'var(--neutral-600)' };
+  const teamBg = { ADL: '#E6EAF5', FORMEXA: '#E8F0EC', EXTERNO: 'var(--neutral-200)' };
+  el.innerHTML = contacts.map(c => {
+    const initials = c.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    return `
+    <div style="background:var(--white); border:1px solid var(--neutral-200); border-radius:var(--radius); padding:16px 18px; display:flex; gap:12px; align-items:flex-start;">
+      <div style="width:40px; height:40px; border-radius:50%; background:${teamBg[c.team]}; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:600; color:${teamColor[c.team]}; flex-shrink:0">${initials}</div>
+      <div>
+        <div style="font-size:14px; font-weight:500; color:var(--neutral-800)">${c.name}</div>
+        <div style="font-size:12px; color:${teamColor[c.team]}; margin-top:2px; font-weight:500">${c.role}</div>
+        <div style="font-size:12px; color:var(--neutral-600); margin-top:3px">${c.info}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+loadData();
+</script>
+</body>
+</html>
