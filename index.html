@@ -2,7 +2,12 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ADL × Formexa">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#1B2B5E">
 <title>Aguas de Lourdes × Formexa</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -26,10 +31,11 @@
   --r: 10px;
 }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);min-height:100vh;}
+html{height:100%;-webkit-text-size-adjust:100%;}
+body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);min-height:100vh;min-height:-webkit-fill-available;-webkit-tap-highlight-color:transparent;touch-action:manipulation;}
 
 /* LOGIN */
-#login{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--adl);background-image:radial-gradient(ellipse at 30% 70%,rgba(44,74,158,.4) 0%,transparent 60%),radial-gradient(ellipse at 70% 20%,rgba(26,92,56,.3) 0%,transparent 50%);}
+#login{min-height:100vh;min-height:-webkit-fill-available;display:flex;align-items:center;justify-content:center;background:var(--adl);background-image:radial-gradient(ellipse at 30% 70%,rgba(44,74,158,.4) 0%,transparent 60%),radial-gradient(ellipse at 70% 20%,rgba(26,92,56,.3) 0%,transparent 50%);padding:20px;}
 .lbox{background:var(--white);border-radius:16px;padding:44px 36px;width:380px;box-shadow:0 20px 60px rgba(0,0,0,.3);}
 .llogo{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:6px;}
 .llogo-adl{font-family:'Playfair Display',serif;font-size:17px;font-weight:600;color:var(--adl);}
@@ -55,7 +61,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);m
 
 /* APP */
 #app{display:none;}
-.topbar{background:var(--white);border-bottom:1px solid var(--n200);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}
+.topbar{background:var(--white);border-bottom:1px solid var(--n200);padding:0 28px;padding-top:env(safe-area-inset-top,0px);height:calc(58px + env(safe-area-inset-top,0px));display:flex;align-items:flex-end;padding-bottom:8px;justify-content:space-between;position:sticky;top:0;z-index:100;}
 .tb-brand{display:flex;align-items:center;gap:9px;}
 .tb-adl{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:var(--adl);}
 .tb-x{font-size:11px;color:var(--n400);}
@@ -224,7 +230,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);m
 .pipe-special{border-left:3px solid var(--adl);}
 .pipe-special-label{font-size:10px;color:var(--adl);font-weight:600;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px;}
 
-/* Pipeline modal */
+/* DRAG & DROP */
+.pipe-card{cursor:grab;}
+.pipe-card:active{cursor:grabbing;}
+.pipe-card.dragging{opacity:.4;transform:scale(.97);box-shadow:none;}
+.pipe-col.drag-over{background:var(--fx-bg)!important;border-color:var(--fx)!important;border-style:dashed!important;border-width:2px!important;}
+.pipe-col.drag-over .pipe-col-hdr{color:var(--fx)!important;}
+.pipe-drag-hint{font-size:10px;color:var(--n400);text-align:center;padding:4px 8px 8px;letter-spacing:.2px;}
+.pipe-drop-zone{min-height:40px;border-radius:6px;transition:background .15s;}
 .pipe-modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
 .pipe-status-flow{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:16px;padding:12px;background:var(--n100);border-radius:8px;}
 .psf-step{font-size:10.5px;padding:3px 8px;border-radius:12px;background:var(--n200);color:var(--n600);}
@@ -237,10 +250,122 @@ body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);m
   .pipe-modal-grid{grid-template-columns:1fr;}
 }
 
-/* BOTTOM NAV */
+/* KPI COCKPIT */
+.kpi-section{margin-bottom:22px;}
+.kpi-section-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.kpi-section-title{font-size:11px;font-weight:600;color:var(--n600);text-transform:uppercase;letter-spacing:.6px;}
+.kpi-edit-btn{font-size:11px;color:var(--n600);background:none;border:1px solid var(--n200);padding:4px 10px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .12s;}
+.kpi-edit-btn:hover{background:var(--n100);color:var(--n800);}
+.kpi-edit-btn.active{background:var(--fx);color:white;border-color:var(--fx);}
+.kpi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+.kpi-card{background:var(--white);border:1px solid var(--n200);border-radius:var(--r);padding:14px 16px;position:relative;overflow:hidden;}
+.kpi-card::after{content:'';position:absolute;bottom:0;left:0;height:3px;background:var(--n200);width:100%;}
+.kpi-card.kpi-good::after{background:var(--fx);}
+.kpi-card.kpi-warn::after{background:#F59E0B;}
+.kpi-card.kpi-start::after{background:var(--n300,#ccc);}
+.kpi-lbl{font-size:10.5px;font-weight:500;color:var(--n600);text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px;}
+.kpi-val{font-size:26px;font-weight:600;font-family:'Playfair Display',serif;color:var(--n800);line-height:1;}
+.kpi-meta{display:flex;align-items:center;justify-content:space-between;margin-top:5px;}
+.kpi-meta-left{font-size:10.5px;color:var(--n600);}
+.kpi-pct{font-size:11px;font-weight:600;padding:2px 6px;border-radius:8px;}
+.kpi-pct.good{background:var(--done-bg);color:var(--done-c);}
+.kpi-pct.warn{background:#FFF3CD;color:#856404;}
+.kpi-pct.zero{background:var(--n200);color:var(--n600);}
+.kpi-input-row{display:flex;align-items:center;gap:6px;margin-top:6px;}
+.kpi-input{width:70px;padding:4px 7px;border:1.5px solid var(--n200);border-radius:6px;font-size:13px;font-family:'DM Sans',sans-serif;color:var(--n800);background:var(--white);outline:none;}
+.kpi-input:focus{border-color:var(--adl);}
+.kpi-input-lbl{font-size:11px;color:var(--n600);}
+@media(max-width:680px){
+  .kpi-grid{grid-template-columns:1fr 1fr;}
+  .kpi-val{font-size:22px;}
+}
+/* DUE DATE URGENCY */
+.tdate{font-size:11px;color:var(--n400);}
+.tdate-ok{font-size:11.5px;font-weight:500;padding:2px 7px;border-radius:8px;background:#E8F5EE;color:#1A6B3C;}
+.tdate-soon{font-size:11.5px;font-weight:500;padding:2px 7px;border-radius:8px;background:#FFF3E0;color:#E65100;}
+.tdate-urgent{font-size:11.5px;font-weight:600;padding:2px 7px;border-radius:8px;background:#FAE8E8;color:#8B1C1C;animation:pulse-urgent 1.5s ease-in-out infinite;}
+.tdate-overdue{font-size:11.5px;font-weight:700;padding:2px 7px;border-radius:8px;background:#B21117;color:white;}
+@keyframes pulse-urgent{0%,100%{opacity:1;}50%{opacity:.6;}}
+
+/* ROADMAP TRACKER */
+.rm-tracker{margin-bottom:20px;}
+.rm-phase-card{background:var(--white);border:1px solid var(--n200);border-radius:var(--r);margin-bottom:14px;overflow:hidden;}
+.rm-phase-hdr{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;cursor:pointer;user-select:none;}
+.rm-phase-hdr:hover{background:var(--n100);}
+.rm-phase-left{display:flex;align-items:center;gap:12px;}
+.rm-phase-num{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:white;flex-shrink:0;}
+.rm-phase-info{}
+.rm-phase-name{font-size:14px;font-weight:600;color:var(--n800);}
+.rm-phase-zone{font-size:11.5px;color:var(--n600);margin-top:2px;}
+.rm-phase-right{display:flex;align-items:center;gap:14px;flex-shrink:0;}
+.rm-pct-badge{font-size:13px;font-weight:700;padding:4px 10px;border-radius:20px;}
+.rm-status-badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:12px;}
+.rm-sb-pending{background:var(--n200);color:var(--n600);}
+.rm-sb-active{background:#FFF3E0;color:#E65100;}
+.rm-sb-done{background:var(--done-bg);color:var(--done-c);}
+.rm-progress-bar{height:4px;background:var(--n200);width:100%;}
+.rm-progress-fill{height:100%;transition:width .4s ease;border-radius:0;}
+.rm-phase-body{padding:16px 20px;border-top:1px solid var(--n100);display:none;}
+.rm-phase-body.open{display:block;}
+.rm-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+.rm-metric{background:var(--n100);border-radius:8px;padding:10px 12px;}
+.rm-metric-lbl{font-size:10.5px;color:var(--n600);text-transform:uppercase;letter-spacing:.4px;margin-bottom:4px;}
+.rm-metric-val{font-size:20px;font-weight:600;font-family:'Playfair Display',serif;color:var(--n800);}
+.rm-metric-sub{font-size:10.5px;color:var(--n600);margin-top:1px;}
+.rm-accounts-list{margin-top:8px;}
+.rm-account-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--n100);font-size:12.5px;}
+.rm-account-row:last-child{border-bottom:none;}
+.rm-account-name{color:var(--n800);font-weight:500;}
+.rm-account-status{font-size:11px;font-weight:500;padding:2px 7px;border-radius:8px;}
+.rm-edit-phase-btn{font-size:11px;color:var(--n600);background:none;border:1px solid var(--n200);padding:4px 10px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:12px;}
+.rm-edit-phase-btn:hover{background:var(--n100);}
+/* Timeline connector */
+.rm-connector{display:flex;align-items:center;justify-content:center;height:20px;color:var(--n400);font-size:16px;}
+/* Edit phase modal */
+.rm-edit-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;}
+@media(max-width:680px){
+  .rm-metrics{grid-template-columns:1fr 1fr;}
+  .rm-phase-right{gap:8px;}
+  .rm-pct-badge{font-size:12px;}
+  .rm-edit-grid{grid-template-columns:1fr;}
+}
+.file-upload-area{border:2px dashed var(--n200);border-radius:8px;padding:14px;text-align:center;cursor:pointer;transition:all .14s;background:var(--n100);position:relative;}
+.file-upload-area:hover,.file-upload-area.drag-over{border-color:var(--adl);background:#EEF2FF;}
+.file-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.file-upload-txt{font-size:12.5px;color:var(--n600);pointer-events:none;}
+.file-upload-txt strong{color:var(--adl);}
+.file-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+.file-chip{display:flex;align-items:center;gap:6px;padding:5px 10px;background:var(--white);border:1px solid var(--n200);border-radius:8px;font-size:12px;color:var(--n800);}
+.file-chip-icon{font-size:14px;}
+.file-chip-name{max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.file-chip-size{font-size:10px;color:var(--n400);}
+.file-chip-remove{cursor:pointer;color:var(--n400);font-size:14px;line-height:1;}
+.file-chip-remove:hover{color:var(--red);}
+/* File library page */
+.files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-top:14px;}
+.file-card{background:var(--white);border:1px solid var(--n200);border-radius:var(--r);padding:14px 16px;cursor:pointer;transition:all .12s;}
+.file-card:hover{border-color:var(--adl);box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.file-card-icon{font-size:28px;margin-bottom:8px;}
+.file-card-name{font-size:13px;font-weight:500;color:var(--n800);word-break:break-word;margin-bottom:4px;}
+.file-card-meta{font-size:11px;color:var(--n600);}
+.file-search{width:100%;padding:9px 12px;border:1.5px solid var(--n200);border-radius:8px;font-size:14px;font-family:'DM Sans',sans-serif;color:var(--n800);outline:none;margin-bottom:4px;}
+.file-search:focus{border-color:var(--adl);}
+@media(max-width:680px){.files-grid{grid-template-columns:1fr 1fr;}}
+.assignee-picker{display:flex;flex-wrap:wrap;gap:6px;padding:6px 0 2px;}
+.assignee-chip{display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:20px;border:1.5px solid var(--n200);font-size:12px;font-weight:500;cursor:pointer;background:var(--white);font-family:'DM Sans',sans-serif;color:var(--n600);transition:all .12s;user-select:none;}
+.assignee-chip:hover{border-color:var(--adl);color:var(--adl);}
+.assignee-chip.sel-adl{background:var(--adl-bg);border-color:var(--adl);color:var(--adl);}
+.assignee-chip.sel-fx{background:var(--fx-bg);border-color:var(--fx);color:var(--fx);}
+.assignee-chip.sel-ext{background:#F3E5F5;border-color:#6A1B9A;color:#6A1B9A;}
+.ach-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.task-assignees{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px;}
+.tasignee{font-size:10.5px;padding:2px 7px;border-radius:10px;font-weight:500;}
+.ta-adl{background:var(--adl-bg);color:var(--adl);}
+.ta-fx{background:var(--fx-bg);color:var(--fx);}
+.ta-ext{background:#F3E5F5;color:#6A1B9A;}
+
 .bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--n200);z-index:200;padding:0 4px;padding-bottom:env(safe-area-inset-bottom,0px);}
-.bnav-inner{display:flex;align-items:stretch;height:56px;}
-.bni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;border-radius:8px;transition:background .12s;padding:4px 2px;position:relative;}
+.bnav-inner{display:flex;align-items:stretch;height:56px;}.bni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;border-radius:8px;transition:background .12s;padding:4px 2px;position:relative;}
 .bni:active{background:var(--n100);}
 .bni.active .bni-lbl,.bni.active .bni-ic{color:var(--adl);}
 .bni-ic{font-size:17px;color:var(--n600);line-height:1;}
@@ -287,8 +412,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);m
   .topbar{padding:0 10px;}
   .bni-lbl{font-size:9px;}
 }
-::-webkit-scrollbar{width:5px;}
-::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px;}
+/* iOS input fix — font-size 16px prevents auto-zoom on focus */
+.linput,.finput,.finput-full,.ftextarea,.fselect-full,.fsel,.ntextarea{font-size:16px!important;}
+@media(max-width:680px){
+  .linput,.finput,.finput-full,.ftextarea,.fselect-full,.fsel,.ntextarea{font-size:16px!important;}
+}
 </style>
 </head>
 <body>
@@ -360,6 +488,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);m
       <div class="nav-lbl">Proyecto</div>
       <div class="nav-item" id="nav-roadmap" onclick="showPage('roadmap')"><div class="nav-dot" style="background:#5C1B8E"></div>Roadmap</div>
       <div class="nav-item" id="nav-pipeline" onclick="showPage('pipeline')"><div class="nav-dot" style="background:#0A5C8A"></div>Pipeline<span class="nav-count" id="nav-pc">0</span></div>
+      <div class="nav-item" id="nav-files" onclick="showPage('files')"><div class="nav-dot" style="background:#5C3A1B"></div>Archivos</div>
       <div class="nav-item" id="nav-contacts" onclick="showPage('contacts')"><div class="nav-dot" style="background:#6B6A65"></div>Contactos</div>
     </div>
 
@@ -372,6 +501,16 @@ body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);m
           <div><div class="pt">Resumen general</div><div class="ps">Distribución exclusiva Aguas de Lourdes — EE.UU.</div></div>
           <button class="pbtn" onclick="showPage('tasks')">Ver pendientes →</button>
         </div>
+
+        <!-- KPI COCKPIT -->
+        <div class="kpi-section">
+          <div class="kpi-section-hdr">
+            <span class="kpi-section-title">KPIs del negocio — Mes actual</span>
+            <button class="kpi-edit-btn" id="kpi-edit-btn" onclick="toggleKpiEdit()">✎ Actualizar números</button>
+          </div>
+          <div class="kpi-grid" id="kpi-grid"></div>
+        </div>
+
         <div class="stats" id="stats-row"></div>
         <div class="two-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
           <div class="card">
@@ -484,9 +623,21 @@ body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);m
         <div id="pipe-board" class="pipe-board"></div>
       </div>
 
+      <!-- FILES -->
+      <div class="page" id="page-files">
+        <div class="ph">
+          <div><div class="pt">Archivos</div><div class="ps">Biblioteca compartida — todos pueden descargar</div></div>
+        </div>
+        <input class="file-search" id="file-search" placeholder="🔍 Buscar archivo por nombre..." oninput="renderFiles()">
+        <div id="files-grid" class="files-grid"></div>
+        <div id="files-empty" class="empty" style="display:none">Sin archivos subidos todavía. Se agregan desde las minutas.</div>
+      </div>
+
       <!-- ROADMAP -->
       <div class="page" id="page-roadmap">
-        <div class="ph"><div><div class="pt">Roadmap de lanzamiento</div><div class="ps">Plan por fases — EE.UU.</div></div></div>
+        <div class="ph">
+          <div><div class="pt">Roadmap de lanzamiento</div><div class="ps">Progreso en vivo — conectado al pipeline · haz clic en cada fase para ver detalle</div></div>
+        </div>
         <div id="roadmap-content"></div>
       </div>
 
@@ -565,8 +716,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);m
     <div class="modal-title">Nueva tarea</div>
     <div class="fg"><label class="flabel">Descripción</label><textarea class="ftextarea" id="m-text" placeholder="¿Qué hay que hacer?"></textarea></div>
     <div class="two-col">
-      <div class="fg"><label class="flabel">Responsable</label><select class="fselect-full" id="m-owner"><option value="BOTH">Ambos</option><option value="ADL">Aguas de Lourdes</option><option value="FORMEXA">Formexa</option></select></div>
+      <div class="fg"><label class="flabel">Equipo responsable</label><select class="fselect-full" id="m-owner"><option value="BOTH">Ambos</option><option value="ADL">Aguas de Lourdes</option><option value="FORMEXA">Formexa</option></select></div>
       <div class="fg"><label class="flabel">Estado</label><select class="fselect-full" id="m-status"><option value="open">Abierto</option><option value="progress">En proceso</option><option value="blocked">Bloqueado</option></select></div>
+    </div>
+    <div class="fg">
+      <label class="flabel">Personas responsables <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--n400)">(selecciona quién lo atiende)</span></label>
+      <div class="assignee-picker" id="assignee-picker"></div>
     </div>
     <div class="two-col">
       <div class="fg"><label class="flabel">Prioridad</label><select class="fselect-full" id="m-pri"><option value="high">Alta</option><option value="med">Media</option><option value="low">Baja</option></select></div>
@@ -582,18 +737,57 @@ body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);m
 
 <!-- MINUTE MODAL -->
 <div class="overlay" id="min-modal">
-  <div class="modal" style="width:520px;">
+  <div class="modal" style="width:540px;">
     <div class="modal-title">Nueva minuta</div>
     <div class="two-col">
       <div class="fg"><label class="flabel">Fecha</label><input type="date" class="finput-full" id="min-date"></div>
       <div class="fg"><label class="flabel">Tipo</label><select class="fselect-full" id="min-type"><option>Revisión semanal</option><option>Kick-off</option><option>Negociación</option><option>Seguimiento cliente</option><option>Llamada de equipo</option><option>Visita a fábrica</option><option>Otro</option></select></div>
     </div>
-    <div class="fg"><label class="flabel">Temas tratados</label><textarea class="ftextarea" id="min-topics" style="min-height:80px;" placeholder="Puntos discutidos..."></textarea></div>
-    <div class="fg"><label class="flabel">Acuerdos y compromisos</label><textarea class="ftextarea" id="min-agreements" style="min-height:80px;" placeholder="¿A qué se comprometió cada parte?"></textarea></div>
-    <div class="fg"><label class="flabel">Participantes</label><input type="text" class="finput-full" id="min-parts" placeholder="Ej: José Manuel (ADL), Adrián (Formexa)"></div>
+    <div class="fg"><label class="flabel">Temas tratados</label><textarea class="ftextarea" id="min-topics" style="min-height:70px;" placeholder="Puntos discutidos..."></textarea></div>
+    <div class="fg"><label class="flabel">Acuerdos y compromisos</label><textarea class="ftextarea" id="min-agreements" style="min-height:70px;" placeholder="¿A qué se comprometió cada parte?"></textarea></div>
+    <div class="fg">
+      <label class="flabel">Participantes <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--n400)">(selecciona quién estuvo)</span></label>
+      <div class="assignee-picker" id="min-participants-picker"></div>
+    </div>
+    <div class="fg">
+      <label class="flabel">Adjuntar archivos <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--n400)">(PDF, Word, Excel, audio, video — máx. 5MB c/u)</span></label>
+      <div class="file-upload-area" id="min-upload-area">
+        <input type="file" id="min-file-input" multiple accept="*/*" onchange="handleMinuteFiles(this.files)">
+        <div class="file-upload-txt">📎 <strong>Haz clic</strong> o arrastra archivos aquí</div>
+      </div>
+      <div class="file-chips" id="min-file-chips"></div>
+    </div>
+    <div class="fg" style="background:#EEF2FF;border-radius:8px;padding:10px 12px;">
+      <div style="font-size:11.5px;color:var(--adl);font-weight:500;margin-bottom:2px;">📧 Notificación por correo</div>
+      <div style="font-size:11.5px;color:var(--n600);">Al guardar, se registra en el panel y se notifica a los participantes seleccionados. Para envío automático de correo, configura EmailJS en Ajustes.</div>
+    </div>
     <div class="mactions">
       <button class="mbtn-cancel" onclick="closeModal('min-modal')">Cancelar</button>
-      <button class="mbtn-save" onclick="saveMinute()">Guardar</button>
+      <button class="mbtn-save" onclick="saveMinute()">Guardar y notificar</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PHASE MODAL -->
+<div class="overlay" id="phase-modal">
+  <div class="modal" style="width:500px;">
+    <div class="modal-title" id="phase-modal-title">Editar fase</div>
+    <input type="hidden" id="phase-edit-idx">
+    <div class="fg"><label class="flabel">Nombre de la fase</label><input type="text" class="finput-full" id="ph-name"></div>
+    <div class="fg"><label class="flabel">Zona geográfica</label><input type="text" class="finput-full" id="ph-zone" placeholder="Ej: Texas — Houston, Dallas, San Antonio"></div>
+    <div class="rm-edit-grid">
+      <div class="fg"><label class="flabel">Meta cuentas activas</label><input type="number" class="finput-full" id="ph-cuentas-meta" min="1"></div>
+      <div class="fg"><label class="flabel">Meta cajas/mes</label><input type="number" class="finput-full" id="ph-cajas-meta" min="1"></div>
+      <div class="fg"><label class="flabel">Meta camiones/mes</label><input type="number" class="finput-full" id="ph-cam-meta" min="0.5" step="0.5"></div>
+    </div>
+    <div class="fg">
+      <label class="flabel">Fecha límite de la fase</label>
+      <input type="date" class="finput-full" id="ph-deadline">
+    </div>
+    <div class="fg"><label class="flabel">Notas / acuerdos de esta fase</label><textarea class="ftextarea" id="ph-notes" style="min-height:60px;" placeholder="Qué se necesita lograr para avanzar a la siguiente fase..."></textarea></div>
+    <div class="mactions">
+      <button class="mbtn-cancel" onclick="closeModal('phase-modal')">Cancelar</button>
+      <button class="mbtn-save" onclick="savePhase()">Guardar fase</button>
     </div>
   </div>
 </div>
@@ -603,8 +797,23 @@ body{font-family:'DM Sans',sans-serif;background:var(--n100);color:var(--n800);m
 <script>
 // ─── PASSWORDS ───
 const PWD = { ADL: 'lourdes2026', FORMEXA: 'formexa2026' };
-let CU = null; // current user
+let CU = null;
 let selCard = null;
+
+// ─── TEAM PEOPLE ───
+const PEOPLE = [
+  { id:'adrian',    name:'Adrián',     full:'Adrián Sheridan',      team:'fx',  color:'sel-fx' },
+  { id:'florencia', name:'Florencia',   full:'Florencia Hinojosa',   team:'fx',  color:'sel-fx' },
+  { id:'alejandro', name:'Alejandro',   full:'Alejandro Aguirre',    team:'fx',  color:'sel-fx' },
+  { id:'ruben',     name:'Rubén',       full:'Rubén Fernández',      team:'fx',  color:'sel-fx' },
+  { id:'yair',      name:'Yair',        full:'Yair Durán',           team:'fx',  color:'sel-fx' },
+  { id:'jose',      name:'José Manuel', full:'José Manuel (ADL)',     team:'adl', color:'sel-adl' },
+  { id:'luis',      name:'Luis M.',     full:'Luis Miguel Pérez',    team:'ext', color:'sel-ext' },
+  { id:'hector',    name:'Héctor',      full:'Héctor González',      team:'ext', color:'sel-ext' },
+];
+
+const DOT_COLORS = { adl:'var(--adl)', fx:'var(--fx)', ext:'#6A1B9A' };
+const TAG_CLASS  = { adl:'ta-adl', fx:'ta-fx', ext:'ta-ext' };
 
 // ─── STORAGE KEY ───
 const SK = 'adl_fx_v4';
@@ -654,6 +863,39 @@ function makeDefaultData() {
     nextAct: 2,
     nextMin: 1,
     nextNotif: 1,
+    files: [],
+    roadmap: [
+      {
+        id:1, name:'Fase 0 — Arranque', zone:'Texas: Houston · Dallas · San Antonio · Amarillo',
+        color:'#1B2B5E', cuentas_meta:5, cajas_meta:9375, cam_meta:2.5,
+        deadline:'2026-06-30', status:'active',
+        notes:'Establecer primeras 5 cuentas activas en Texas. Prioridad: distribuidores DSD con cobertura amplia.',
+        zones:['Texas'], expanded:false
+      },
+      {
+        id:2, name:'Fase 1 — Expansión Oeste', zone:'Arizona + California (L.A., San Diego, Stockton, Vacaville)',
+        color:'#2C4A9E', cuentas_meta:8, cajas_meta:22500, cam_meta:5.0,
+        deadline:'2026-09-30', status:'pending',
+        notes:'Entrada a California vía Northgate y Unified Western. Requiere historial de ventas en Texas como palanca.',
+        zones:['California','Arizona'], expanded:false
+      },
+      {
+        id:3, name:'Fase 2 — Costa Este + Chicago', zone:'Florida · NY/NJ/PA · Atlanta · Chicago',
+        color:'#1A5C38', cuentas_meta:10, cajas_meta:45000, cam_meta:10.0,
+        deadline:'2026-12-31', status:'pending',
+        notes:'Expansión a mercados hispanos del Este. Requiere logística adicional y RSM dedicado por zona.',
+        zones:['Florida','Costa Este','Chicago'], expanded:false
+      },
+    ],
+    nextPhaseId: 4,
+    kpis: {
+      camiones: 0, camiones_meta: 2.5,
+      cajas: 0, cajas_meta: 9375,
+      cuentas_activas: 0, cuentas_meta: 5,
+      visitas_rsm: 0, visitas_meta: 20,
+      puntos_venta: 0, puntos_meta: 50,
+      mdf_usd: 0, mdf_meta: 2500,
+    },
   };
 }
 
@@ -764,12 +1006,14 @@ function showPage(p) {
 
 // ─── RENDER ALL ───
 function renderAll() {
+  renderKpis();
   renderStats();
   renderTasks();
   renderCritical();
   renderRecentAct();
   renderFullAct();
   renderMinutes();
+  renderFiles();
   renderPipeline();
   renderRoadmap();
   renderContacts();
@@ -797,7 +1041,37 @@ function updateCounts() {
   if (bc) { bc.textContent = c; bc.classList.toggle('show', c > 0); }
 }
 
-// ─── TASK HELPERS ───
+// ─── DUE DATE URGENCY ───
+function dueDateHTML(due) {
+  if (!due) return '';
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(due + 'T00:00:00');
+  const diff = Math.round((d - today) / 86400000); // days
+  const fmt = d.toLocaleDateString('es-MX', {day:'numeric', month:'short'});
+  if (diff < 0)  return `<span class="tdate-overdue">⚠ Vencido · ${fmt}</span>`;
+  if (diff === 0) return `<span class="tdate-urgent">🔴 Hoy · ${fmt}</span>`;
+  if (diff <= 2)  return `<span class="tdate-urgent">🔴 ${diff}d · ${fmt}</span>`;
+  if (diff <= 5)  return `<span class="tdate-soon">🟡 ${diff}d · ${fmt}</span>`;
+  return `<span class="tdate-ok">🟢 ${fmt}</span>`;
+}
+
+// ─── SMART SORT ───
+function smartSortTasks(tasks) {
+  const today = new Date(); today.setHours(0,0,0,0);
+  const priScore = { high:0, med:1, low:2 };
+  return [...tasks].sort((a, b) => {
+    // Overdue/urgent first
+    const urgA = a.due ? Math.round((new Date(a.due+'T00:00:00') - today)/86400000) : 999;
+    const urgB = b.due ? Math.round((new Date(b.due+'T00:00:00') - today)/86400000) : 999;
+    const scoreA = (urgA <= 2 ? 0 : urgA <= 5 ? 1 : 2) * 10 + (priScore[a.pri]||1);
+    const scoreB = (urgB <= 2 ? 0 : urgB <= 5 ? 1 : 2) * 10 + (priScore[b.pri]||1);
+    if (scoreA !== scoreB) return scoreA - scoreB;
+    // Secondary: blocked last
+    if (a.status === 'blocked' && b.status !== 'blocked') return 1;
+    if (b.status === 'blocked' && a.status !== 'blocked') return -1;
+    return 0;
+  });
+}
 const OWN_MAP = { ADL:'Aguas de Lourdes', FORMEXA:'Formexa', BOTH:'Ambos' };
 const ST_MAP = { open:'Abierto', progress:'En proceso', done:'Completado', blocked:'Bloqueado' };
 const ST_CYCLE = ['open','progress','blocked'];
@@ -815,10 +1089,16 @@ function taskHTML(t, check=true) {
       <div class="tmeta">
         <span class="owner-tag ${oc}">${OWN_MAP[t.owner]||t.owner}</span>
         <span class="status-tag ${sc}">${ST_MAP[t.done?'done':t.status]||t.status}</span>
-        ${t.due?`<span class="tdate">↳ ${t.due}</span>`:''}
+        ${t.due ? dueDateHTML(t.due) : ''}
       </div>
+      ${t.assignees && t.assignees.length ? `<div class="task-assignees">${t.assignees.map(id => {
+        const p = PEOPLE.find(p=>p.id===id);
+        if (!p) return '';
+        return `<span class="tasignee ${TAG_CLASS[p.team]||'ta-fx'}">👤 ${p.name}</span>`;
+      }).join('')}</div>` : ''}
     </div>
     <div class="tactions">
+      ${!t.done?`<button class="ibtn" onclick="openEditTask(${t.id})" title="Editar">✎</button>`:''}
       ${!t.done?`<button class="ibtn" onclick="cycleStatus(${t.id})" title="Cambiar estado">↺</button>`:''}
       <button class="ibtn" onclick="delTask(${t.id})" title="Eliminar">×</button>
     </div>
@@ -829,6 +1109,7 @@ function renderTasks() {
   const f = document.getElementById('filter-owner')?.value || '';
   let active = D.tasks.filter(t => !t.done);
   if (f) active = active.filter(t => t.owner === f);
+  active = smartSortTasks(active);
   let done = D.tasks.filter(t => t.done);
   const al = document.getElementById('tasks-active');
   if (al) al.innerHTML = active.length ? active.map(t => taskHTML(t)).join('') : '<div class="empty">Sin tareas activas.</div>';
@@ -896,20 +1177,98 @@ function addQuick() {
   toast('Tarea agregada', 'success');
 }
 
+// ─── ASSIGNEE PICKER ───
+let selectedAssignees = [];
+
+function renderAssigneePicker(selected = []) {
+  selectedAssignees = [...selected];
+  const el = document.getElementById('assignee-picker');
+  if (!el) return;
+  el.innerHTML = PEOPLE.map(p => {
+    const isSel = selectedAssignees.includes(p.id);
+    const cls = isSel ? p.color : '';
+    return `<div class="assignee-chip ${cls}" id="chip-${p.id}" onclick="toggleAssignee('${p.id}')">
+      <div class="ach-dot" style="background:${DOT_COLORS[p.team]}"></div>
+      ${p.name}
+    </div>`;
+  }).join('');
+}
+
+function toggleAssignee(id) {
+  const p = PEOPLE.find(p => p.id === id);
+  if (!p) return;
+  const chip = document.getElementById('chip-' + id);
+  if (selectedAssignees.includes(id)) {
+    selectedAssignees = selectedAssignees.filter(a => a !== id);
+    chip.className = 'assignee-chip';
+  } else {
+    selectedAssignees.push(id);
+    chip.className = 'assignee-chip ' + p.color;
+  }
+}
+
 function openAddModal() {
+  delete document.getElementById('add-modal').dataset.editId;
+  document.getElementById('add-modal').querySelector('.modal-title').textContent = 'Nueva tarea';
+  renderAssigneePicker([]);
   document.getElementById('add-modal').classList.add('open');
   document.getElementById('m-text').focus();
+}
+
+function openEditTask(id) {
+  const t = D.tasks.find(t => t.id === id);
+  if (!t) return;
+  document.getElementById('m-text').value = t.text;
+  document.getElementById('m-owner').value = t.owner;
+  document.getElementById('m-status').value = t.status;
+  document.getElementById('m-pri').value = t.pri;
+  document.getElementById('m-due').value = t.due || '';
+  document.getElementById('m-notes').value = t.notes || '';
+  renderAssigneePicker(t.assignees || []);
+  document.getElementById('add-modal').dataset.editId = id;
+  document.getElementById('add-modal').querySelector('.modal-title').textContent = 'Editar tarea';
+  document.getElementById('add-modal').classList.add('open');
 }
 
 function saveModalTask() {
   const text = document.getElementById('m-text').value.trim();
   if (!text) return;
-  const t = { id:D.nextId++, text, owner:document.getElementById('m-owner').value, status:document.getElementById('m-status').value, pri:document.getElementById('m-pri').value, due:document.getElementById('m-due').value, notes:document.getElementById('m-notes').value.trim(), by:CU, at:new Date().toISOString(), done:false };
-  D.tasks.unshift(t);
-  addActivity(`Nueva tarea agregada: "${text.substring(0,60)}"`, CU, false);
+  const editId = document.getElementById('add-modal').dataset.editId;
+  const taskData = {
+    text, owner:document.getElementById('m-owner').value,
+    status:document.getElementById('m-status').value,
+    pri:document.getElementById('m-pri').value,
+    due:document.getElementById('m-due').value,
+    notes:document.getElementById('m-notes').value.trim(),
+    assignees: [...selectedAssignees],
+  };
+  if (editId) {
+    const idx = D.tasks.findIndex(t => t.id === parseInt(editId));
+    const prev = D.tasks[idx];
+    if (idx >= 0) D.tasks[idx] = {...prev, ...taskData};
+    // Notify newly assigned people
+    const newAssigned = taskData.assignees.filter(a => !(prev.assignees||[]).includes(a));
+    if (newAssigned.length) {
+      const names = newAssigned.map(id => PEOPLE.find(p=>p.id===id)?.name).filter(Boolean).join(', ');
+      addNotification(`🔔 ${names} asignado(s) a: "${text.substring(0,50)}"`, 'note');
+    }
+    addActivity(`Tarea actualizada: "${text.substring(0,55)}"`, CU, false);
+    toast('Tarea actualizada', 'info');
+  } else {
+    const t = { id:D.nextId++, ...taskData, by:CU, at:new Date().toISOString(), done:false };
+    D.tasks.unshift(t);
+    // Notify all assignees
+    if (taskData.assignees.length) {
+      const names = taskData.assignees.map(id => PEOPLE.find(p=>p.id===id)?.name).filter(Boolean).join(', ');
+      addNotification(`🔔 Nueva tarea asignada a ${names}: "${text.substring(0,50)}"`, 'note');
+    }
+    addActivity(`Nueva tarea agregada: "${text.substring(0,60)}"`, CU, false);
+    toast('Tarea guardada', 'success');
+  }
   save(D); renderAll(); closeModal('add-modal');
   ['m-text','m-notes','m-due'].forEach(id => document.getElementById(id).value='');
-  toast('Tarea guardada', 'success');
+  selectedAssignees = [];
+  delete document.getElementById('add-modal').dataset.editId;
 }
 
 // ─── ACTIVITY ───
@@ -972,22 +1331,120 @@ function clearNotifs() {
 }
 
 // ─── MINUTES ───
+let minuteFiles = []; // [{name, size, type, data(base64)}]
+
+function getFileIcon(type) {
+  if (type.includes('pdf')) return '📄';
+  if (type.includes('word') || type.includes('document')) return '📝';
+  if (type.includes('sheet') || type.includes('excel') || type.includes('csv')) return '📊';
+  if (type.includes('image')) return '🖼️';
+  if (type.includes('audio')) return '🎵';
+  if (type.includes('video')) return '🎬';
+  if (type.includes('zip') || type.includes('rar')) return '📦';
+  return '📎';
+}
+
+function fmtSize(bytes) {
+  if (bytes < 1024) return bytes + 'B';
+  if (bytes < 1048576) return (bytes/1024).toFixed(1) + 'KB';
+  return (bytes/1048576).toFixed(1) + 'MB';
+}
+
+function handleMinuteFiles(files) {
+  Array.from(files).forEach(file => {
+    if (file.size > 5 * 1024 * 1024) { toast(`${file.name} supera 5MB`, 'info'); return; }
+    const reader = new FileReader();
+    reader.onload = e => {
+      minuteFiles.push({ name:file.name, size:file.size, type:file.type, data:e.target.result });
+      renderMinuteFileChips();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderMinuteFileChips() {
+  const el = document.getElementById('min-file-chips');
+  if (!el) return;
+  el.innerHTML = minuteFiles.map((f,i) => `
+    <div class="file-chip">
+      <span class="file-chip-icon">${getFileIcon(f.type)}</span>
+      <span class="file-chip-name" title="${f.name}">${f.name}</span>
+      <span class="file-chip-size">${fmtSize(f.size)}</span>
+      <span class="file-chip-remove" onclick="removeMinuteFile(${i})">×</span>
+    </div>`).join('');
+}
+
+function removeMinuteFile(i) {
+  minuteFiles.splice(i, 1);
+  renderMinuteFileChips();
+}
+
 function openMinuteModal() {
+  minuteFiles = [];
   document.getElementById('min-date').value = new Date().toISOString().split('T')[0];
+  renderMinuteParticipants([]);
+  renderMinuteFileChips();
   document.getElementById('min-modal').classList.add('open');
+}
+
+let selectedMinuteParticipants = [];
+
+function renderMinuteParticipants(selected = []) {
+  selectedMinuteParticipants = [...selected];
+  const el = document.getElementById('min-participants-picker');
+  if (!el) return;
+  el.innerHTML = PEOPLE.map(p => {
+    const isSel = selectedMinuteParticipants.includes(p.id);
+    const cls = isSel ? p.color : '';
+    return `<div class="assignee-chip ${cls}" id="minchip-${p.id}" onclick="toggleMinParticipant('${p.id}')">
+      <div class="ach-dot" style="background:${DOT_COLORS[p.team]}"></div>
+      ${p.name}
+    </div>`;
+  }).join('');
+}
+
+function toggleMinParticipant(id) {
+  const p = PEOPLE.find(p => p.id === id);
+  const chip = document.getElementById('minchip-' + id);
+  if (selectedMinuteParticipants.includes(id)) {
+    selectedMinuteParticipants = selectedMinuteParticipants.filter(a => a !== id);
+    chip.className = 'assignee-chip';
+  } else {
+    selectedMinuteParticipants.push(id);
+    chip.className = 'assignee-chip ' + p.color;
+  }
 }
 
 function saveMinute() {
   const topics = document.getElementById('min-topics').value.trim();
   if (!topics) return;
-  const m = { id:D.nextMin++, date:document.getElementById('min-date').value, type:document.getElementById('min-type').value, topics, agreements:document.getElementById('min-agreements').value.trim(), participants:document.getElementById('min-parts').value.trim(), by:CU, at:new Date().toISOString() };
+  const participantNames = selectedMinuteParticipants.map(id => PEOPLE.find(p=>p.id===id)?.full).filter(Boolean);
+  const m = {
+    id: D.nextMin++,
+    date: document.getElementById('min-date').value,
+    type: document.getElementById('min-type').value,
+    topics,
+    agreements: document.getElementById('min-agreements').value.trim(),
+    participants: participantNames.join(', '),
+    participantIds: [...selectedMinuteParticipants],
+    files: minuteFiles.map(f => ({ name:f.name, size:f.size, type:f.type, data:f.data, minId:D.nextMin-1 })),
+    by: CU,
+    at: new Date().toISOString()
+  };
   D.minutes.unshift(m);
-  const msg = `Nueva minuta: "${m.type}" — ${m.date}`;
+  // Add files to global file library
+  if (!D.files) D.files = [];
+  m.files.forEach(f => {
+    D.files.unshift({ ...f, minDate:m.date, minType:m.type, uploadedBy:CU, at:m.at, id: Date.now() + Math.random() });
+  });
+  const msg = `Nueva minuta: "${m.type}" — ${m.date}${participantNames.length ? ' · ' + participantNames.join(', ') : ''}`;
   addActivity(msg, CU, false);
   addNotification(`📋 ${msg}`, 'note');
   save(D); renderAll(); closeModal('min-modal');
-  ['min-topics','min-agreements','min-parts'].forEach(id => document.getElementById(id).value='');
-  toast('Minuta guardada', 'success');
+  ['min-topics','min-agreements'].forEach(id => document.getElementById(id).value='');
+  minuteFiles = [];
+  selectedMinuteParticipants = [];
+  toast('Minuta guardada ✓', 'success');
 }
 
 function renderMinutes() {
@@ -998,29 +1455,211 @@ function renderMinutes() {
   if (em) em.style.display='none';
   el.innerHTML = D.minutes.map(m => `
     <div class="min-item">
-      <div class="min-date">${m.date} · ${m.type} ${m.participants?'· '+m.participants:''}</div>
+      <div class="min-date">${m.date} · ${m.type}${m.participants ? ' · ' + m.participants : ''}</div>
       <div class="min-title">${m.type}</div>
-      <div class="min-body"><strong>Temas:</strong> ${m.topics}${m.agreements?`<br><strong>Acuerdos:</strong> ${m.agreements}`:''}</div>
+      <div class="min-body">
+        <strong>Temas:</strong> ${m.topics}
+        ${m.agreements?`<br><strong>Acuerdos:</strong> ${m.agreements}`:''}
+      </div>
+      ${m.files && m.files.length ? `<div class="file-chips" style="margin-top:8px">${m.files.map(f=>`
+        <div class="file-chip" onclick="downloadFile('${encodeURIComponent(JSON.stringify({data:f.data,name:f.name,type:f.type}))}')" style="cursor:pointer">
+          <span class="file-chip-icon">${getFileIcon(f.type)}</span>
+          <span class="file-chip-name">${f.name}</span>
+          <span class="file-chip-size">${fmtSize(f.size)}</span>
+          <span style="font-size:10px;color:var(--adl)">⬇</span>
+        </div>`).join('')}</div>` : ''}
     </div>`).join('');
 }
 
-// ─── ROADMAP ───
+function downloadFile(encodedData) {
+  try {
+    const f = JSON.parse(decodeURIComponent(encodedData));
+    const a = document.createElement('a');
+    a.href = f.data;
+    a.download = f.name;
+    a.click();
+  } catch(e) { toast('Error al descargar', 'info'); }
+}
+
+// ─── FILE LIBRARY ───
+function renderFiles() {
+  const grid = document.getElementById('files-grid');
+  const empty = document.getElementById('files-empty');
+  if (!grid) return;
+  const query = (document.getElementById('file-search')?.value || '').toLowerCase();
+  const all = D.files || [];
+  const filtered = query ? all.filter(f => f.name.toLowerCase().includes(query)) : all;
+  if (!filtered.length) {
+    grid.innerHTML = '';
+    if (empty) empty.style.display = 'block';
+    return;
+  }
+  if (empty) empty.style.display = 'none';
+  grid.innerHTML = filtered.map(f => `
+    <div class="file-card" onclick="downloadFile('${encodeURIComponent(JSON.stringify({data:f.data,name:f.name,type:f.type}))}')">
+      <div class="file-card-icon">${getFileIcon(f.type)}</div>
+      <div class="file-card-name">${f.name}</div>
+      <div class="file-card-meta">
+        ${fmtSize(f.size)} · ${f.minDate || ''}<br>
+        ${f.minType || ''} · ${f.uploadedBy === 'ADL' ? 'Aguas de Lourdes' : 'Formexa'}
+      </div>
+    </div>`).join('');
+}
+
+// ─── ROADMAP TRACKER ───
+function getRoadmapProgress(phase) {
+  if (!D.pipeline) return { cuentas:0, cajas:0 };
+  const activeStatuses = ['Pedido inicial','Cliente activo','Reorden'];
+  const relevant = D.pipeline.filter(a =>
+    activeStatuses.includes(a.status) &&
+    phase.zones.some(z => a.zone === z || a.zone.includes(z.split(' ')[0]))
+  );
+  const cuentas = relevant.length;
+  // Estimate cajas from vol field (take lower bound)
+  const cajas = relevant.reduce((sum, a) => {
+    const v = a.vol ? parseInt(a.vol.split('–')[0].replace(/\D/g,'')) || 0 : 0;
+    return sum + v;
+  }, 0);
+  return { cuentas, cajas };
+}
+
+function getPhaseStatus(phase, pct) {
+  if (pct >= 100) return { cls:'rm-sb-done', label:'✓ Completada' };
+  if (phase.status === 'active' || pct > 0) return { cls:'rm-sb-active', label:'● En curso' };
+  return { cls:'rm-sb-pending', label:'○ Pendiente' };
+}
+
+function togglePhase(id) {
+  const p = D.roadmap.find(p => p.id === id);
+  if (p) { p.expanded = !p.expanded; renderRoadmap(); }
+}
+
+function openEditPhase(id) {
+  const p = D.roadmap.find(p => p.id === id);
+  if (!p) return;
+  document.getElementById('phase-edit-idx').value = id;
+  document.getElementById('ph-name').value = p.name;
+  document.getElementById('ph-zone').value = p.zone;
+  document.getElementById('ph-cuentas-meta').value = p.cuentas_meta;
+  document.getElementById('ph-cajas-meta').value = p.cajas_meta;
+  document.getElementById('ph-cam-meta').value = p.cam_meta;
+  document.getElementById('ph-deadline').value = p.deadline || '';
+  document.getElementById('ph-notes').value = p.notes || '';
+  document.getElementById('phase-modal-title').textContent = 'Editar: ' + p.name;
+  document.getElementById('phase-modal').classList.add('open');
+}
+
+function savePhase() {
+  const id = parseInt(document.getElementById('phase-edit-idx').value);
+  const p = D.roadmap.find(p => p.id === id);
+  if (!p) return;
+  p.name = document.getElementById('ph-name').value.trim() || p.name;
+  p.zone = document.getElementById('ph-zone').value.trim();
+  p.cuentas_meta = parseFloat(document.getElementById('ph-cuentas-meta').value) || p.cuentas_meta;
+  p.cajas_meta = parseFloat(document.getElementById('ph-cajas-meta').value) || p.cajas_meta;
+  p.cam_meta = parseFloat(document.getElementById('ph-cam-meta').value) || p.cam_meta;
+  p.deadline = document.getElementById('ph-deadline').value;
+  p.notes = document.getElementById('ph-notes').value.trim();
+  addActivity(`Roadmap actualizado: "${p.name}"`, CU, false);
+  save(D); renderAll(); closeModal('phase-modal');
+  toast('Fase actualizada', 'success');
+}
+
 function renderRoadmap() {
   const el = document.getElementById('roadmap-content');
   if (!el) return;
-  const phases = [
-    { n:'Fase 0 — Arranque (Mes 0)', z:'Texas: Houston · Dallas · San Antonio · Amarillo', c:'H-E-B · Walmart · Kroger · Excel Grocery (La Michoacana, El Ahorro) · Grocers Supply (Fiesta, Foodarama) · AWG Kansas (United, El Rancho, Brookshires)', v:'2.5 camiones', col:'#1B2B5E' },
-    { n:'Fase 1 — Expansión (Mes 1–3)', z:'Arizona + California (L.A., San Diego, Stockton, Vacaville)', c:'Northgate · UNFI · Food 4 Less · Unified Western (Superior, Bodega Latina, Cardenas, Vallarta, Stater Bros) · Chavez Markets · Smart & Final', v:'+5.0 cam/mes', col:'#2C4A9E' },
-    { n:'Fase 2 — Costa Este + Chicago (Mes 4–6)', z:'Florida · NY/NJ/PA · Atlanta/Carolinas · Chicago', c:'Publix · Sedano\'s · Winn-Dixie · ShopRite · Bravo · C-Town · Key Food · Jewel-Osco · Cermak · El Encanto · Diaz Foods', v:'+7.5–12.5 cam/mes', col:'#1A5C38' },
-  ];
-  el.innerHTML = phases.map(p => `
-    <div class="rm-phase">
-      <div class="rm-hdr" style="background:${p.col}12;">
-        <div><div class="rm-name" style="color:${p.col}">${p.n}</div><div style="font-size:12px;color:var(--n600);margin-top:2px">${p.z}</div></div>
-        <span class="rm-vol" style="color:${p.col};background:${p.col}18">${p.v}</span>
+  if (!D.roadmap) D.roadmap = makeDefaultData().roadmap;
+
+  el.innerHTML = D.roadmap.map((p, i) => {
+    const prog = getRoadmapProgress(p);
+    const pctCuentas = Math.min(100, Math.round((prog.cuentas / p.cuentas_meta) * 100));
+    const pctCajas = Math.min(100, Math.round((prog.cajas / p.cajas_meta) * 100));
+    const pct = pctCuentas; // primary progress metric
+    const st = getPhaseStatus(p, pct);
+    const fillColor = pct >= 80 ? '#1A5C38' : pct >= 40 ? '#E65100' : p.color;
+    const pctColor = pct >= 80 ? '#E8F5EE' : pct >= 40 ? '#FFF3E0' : '#EEF2FF';
+    const pctTextColor = pct >= 80 ? '#1A6B3C' : pct >= 40 ? '#E65100' : p.color;
+
+    // Accounts in this phase from pipeline
+    const zoneAccounts = D.pipeline ? D.pipeline.filter(a =>
+      p.zones.some(z => a.zone === z || a.zone.includes(z.split(' ')[0]))
+    ) : [];
+
+    // Deadline urgency
+    let deadlineHTML = '';
+    if (p.deadline) {
+      const today = new Date(); today.setHours(0,0,0,0);
+      const d = new Date(p.deadline + 'T00:00:00');
+      const diff = Math.round((d - today) / 86400000);
+      const fmt = d.toLocaleDateString('es-MX', {day:'numeric', month:'short', year:'numeric'});
+      if (diff < 0) deadlineHTML = `<span style="font-size:11px;color:var(--red);font-weight:600">⚠ Vencida · ${fmt}</span>`;
+      else if (diff <= 30) deadlineHTML = `<span style="font-size:11px;color:#E65100;font-weight:500">📅 ${diff}d restantes · ${fmt}</span>`;
+      else deadlineHTML = `<span style="font-size:11px;color:var(--n600)">📅 ${fmt}</span>`;
+    }
+
+    return `
+    ${i > 0 ? '<div class="rm-connector">↓</div>' : ''}
+    <div class="rm-phase-card">
+      <div class="rm-progress-bar"><div class="rm-progress-fill" style="width:${pct}%;background:${fillColor}"></div></div>
+      <div class="rm-phase-hdr" onclick="togglePhase(${p.id})">
+        <div class="rm-phase-left">
+          <div class="rm-phase-num" style="background:${p.color}">${i}</div>
+          <div class="rm-phase-info">
+            <div class="rm-phase-name">${p.name}</div>
+            <div class="rm-phase-zone">${p.zone}</div>
+          </div>
+        </div>
+        <div class="rm-phase-right">
+          ${deadlineHTML}
+          <span class="rm-pct-badge" style="background:${pctColor};color:${pctTextColor}">${pct}%</span>
+          <span class="rm-status-badge ${st.cls}">${st.label}</span>
+          <span style="font-size:12px;color:var(--n400)">${p.expanded ? '▲' : '▼'}</span>
+        </div>
       </div>
-      <div class="rm-body"><strong style="color:var(--n800)">Cuentas objetivo:</strong> ${p.c}</div>
-    </div>`).join('');
+      <div class="rm-phase-body ${p.expanded ? 'open' : ''}">
+        <div class="rm-metrics">
+          <div class="rm-metric">
+            <div class="rm-metric-lbl">Cuentas activas</div>
+            <div class="rm-metric-val" style="color:${p.color}">${prog.cuentas} <span style="font-size:14px;color:var(--n400)">/ ${p.cuentas_meta}</span></div>
+            <div class="rm-metric-sub">${pctCuentas}% del objetivo</div>
+          </div>
+          <div class="rm-metric">
+            <div class="rm-metric-lbl">Cajas/mes estimadas</div>
+            <div class="rm-metric-val" style="color:${p.color}">${prog.cajas.toLocaleString()} <span style="font-size:14px;color:var(--n400)">/ ${p.cajas_meta.toLocaleString()}</span></div>
+            <div class="rm-metric-sub">${pctCajas}% del objetivo</div>
+          </div>
+          <div class="rm-metric">
+            <div class="rm-metric-lbl">Camiones objetivo</div>
+            <div class="rm-metric-val" style="color:${p.color}">${p.cam_meta}</div>
+            <div class="rm-metric-sub">por mes en esta fase</div>
+          </div>
+        </div>
+        ${p.notes ? `<div style="font-size:12.5px;color:var(--n600);padding:8px 12px;background:var(--n100);border-radius:7px;margin-bottom:12px;line-height:1.6"><strong style="color:var(--n800)">Acuerdos de fase:</strong> ${p.notes}</div>` : ''}
+        ${zoneAccounts.length ? `
+        <div style="font-size:12px;font-weight:600;color:var(--n600);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px">Cuentas en esta zona (${zoneAccounts.length})</div>
+        <div class="rm-accounts-list">
+          ${zoneAccounts.map(a => {
+            const stColors = {
+              'Prospecto':'background:#F5F5F3;color:#6B6A65',
+              'Presentación enviada':'background:#EEF2FF;color:#2C4A9E',
+              'Muestra enviada':'background:#F3E5F5;color:#6A1B9A',
+              'Cotización activa':'background:#FFF3E0;color:#E65100',
+              'Negociación':'background:#FCE4EC;color:#880E4F',
+              'Pedido inicial':'background:#E8F5EE;color:#1A5C38',
+              'Cliente activo':'background:#E8F5EE;color:#1B5E20',
+              'Reorden':'background:#E0F2F1;color:#004D40',
+            };
+            const sc = stColors[a.status] || 'background:#F5F5F3;color:#6B6A65';
+            return `<div class="rm-account-row">
+              <span class="rm-account-name">${a.name}</span>
+              <span class="rm-account-status" style="${sc}">${a.status}</span>
+            </div>`;
+          }).join('')}
+        </div>` : `<div style="font-size:12.5px;color:var(--n400);text-align:center;padding:12px">Sin cuentas en pipeline para esta zona aún.</div>`}
+        <button class="rm-edit-phase-btn" onclick="event.stopPropagation();openEditPhase(${p.id})">✎ Editar metas y acuerdos de esta fase</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
 // ─── CONTACTS ───
@@ -1069,6 +1708,61 @@ function toast(msg, type='info') {
   el._t = setTimeout(() => el.classList.remove('show'), 2400);
 }
 
+// ─── KPI COCKPIT ───
+let kpiEditMode = false;
+
+const KPI_DEFS = [
+  { key:'camiones', meta_key:'camiones_meta', label:'Camiones despachados', unit:'cam', icon:'🚛' },
+  { key:'cajas', meta_key:'cajas_meta', label:'Cajas vendidas', unit:'cajas', icon:'📦' },
+  { key:'cuentas_activas', meta_key:'cuentas_meta', label:'Cuentas activas', unit:'cuentas', icon:'🏪' },
+  { key:'visitas_rsm', meta_key:'visitas_meta', label:'Visitas RSM este mes', unit:'visitas', icon:'👣' },
+  { key:'puntos_venta', meta_key:'puntos_meta', label:'Puntos de venta', unit:'PDV', icon:'📍' },
+  { key:'mdf_usd', meta_key:'mdf_meta', label:'MDF invertido (USD)', unit:'USD', icon:'💰' },
+];
+
+function toggleKpiEdit() {
+  kpiEditMode = !kpiEditMode;
+  const btn = document.getElementById('kpi-edit-btn');
+  if (btn) { btn.textContent = kpiEditMode ? '✓ Guardar' : '✎ Actualizar números'; btn.classList.toggle('active', kpiEditMode); }
+  if (!kpiEditMode) saveKpis();
+  renderKpis();
+}
+
+function saveKpis() {
+  KPI_DEFS.forEach(def => {
+    const inp = document.getElementById('kpi-inp-' + def.key);
+    if (inp) D.kpis[def.key] = parseFloat(inp.value) || 0;
+  });
+  save(D);
+  addActivity('KPIs del negocio actualizados.', CU);
+  toast('KPIs guardados', 'success');
+}
+
+function renderKpis() {
+  const grid = document.getElementById('kpi-grid');
+  if (!grid) return;
+  if (!D.kpis) D.kpis = makeDefaultData().kpis;
+  grid.innerHTML = KPI_DEFS.map(def => {
+    const val = D.kpis[def.key] || 0;
+    const meta = D.kpis[def.meta_key] || 1;
+    const pct = Math.round((val / meta) * 100);
+    const status = pct >= 80 ? 'good' : pct >= 30 ? 'warn' : 'zero';
+    const cardStatus = pct >= 80 ? 'kpi-good' : pct >= 30 ? 'kpi-warn' : 'kpi-start';
+    const fmtVal = def.key === 'mdf_usd' ? '$' + val.toLocaleString() : def.key === 'cajas' ? val.toLocaleString() : val;
+    return `<div class="kpi-card ${cardStatus}">
+      <div class="kpi-lbl">${def.icon} ${def.label}</div>
+      ${kpiEditMode
+        ? `<div class="kpi-input-row"><input class="kpi-input" id="kpi-inp-${def.key}" type="number" value="${val}" min="0"><span class="kpi-input-lbl">/ ${def.key==='mdf_usd'?'$'+meta.toLocaleString():meta} meta</span></div>`
+        : `<div class="kpi-val">${fmtVal}</div>
+           <div class="kpi-meta">
+             <span class="kpi-meta-left">Meta: ${def.key==='mdf_usd'?'$'+meta.toLocaleString():meta} ${def.unit}</span>
+             <span class="kpi-pct ${status}">${pct}%</span>
+           </div>`
+      }
+    </div>`;
+  }).join('');
+}
+
 // ─── PIPELINE ───
 const PIPE_STAGES = ['Prospecto','Presentación enviada','Muestra enviada','Cotización activa','Negociación','Pedido inicial','Cliente activo','Reorden'];
 const STAGE_COLORS = {
@@ -1101,7 +1795,6 @@ function renderPipeline() {
   if (pipeFilterZone) accounts = accounts.filter(a => a.zone === pipeFilterZone);
   if (pipeFilterStatus !== 'all') accounts = accounts.filter(a => a.status === pipeFilterStatus);
 
-  // Group by stage
   const stages = pipeFilterStatus !== 'all'
     ? [pipeFilterStatus]
     : PIPE_STAGES.filter(s => accounts.some(a => a.status === s));
@@ -1111,22 +1804,37 @@ function renderPipeline() {
   board.innerHTML = stages.map(stage => {
     const items = accounts.filter(a => a.status === stage);
     const col = STAGE_COLORS[stage] || {bg:'#F5F5F3', c:'#6B6A65', hdr:'#9E9E9E'};
-    return `<div class="pipe-col" style="background:${col.bg}20;border:1px solid ${col.c}30;">
+    const isEmpty = items.length === 0;
+    return `<div class="pipe-col pipe-drop-zone"
+      data-stage="${stage}"
+      style="background:${col.bg}20;border:1px solid ${col.c}30;"
+      ondragover="onColDragOver(event)"
+      ondragenter="onColDragEnter(event)"
+      ondragleave="onColDragLeave(event)"
+      ondrop="onColDrop(event,'${stage}')">
       <div class="pipe-col-hdr" style="color:${col.hdr}">
         ${stage} <span class="pipe-col-count">${items.length}</span>
       </div>
-      ${items.map(a => pipeCardHTML(a, col)).join('') || '<div style="font-size:12px;color:var(--n400);text-align:center;padding:8px">Sin cuentas</div>'}
+      ${items.map(a => pipeCardHTML(a, col)).join('')}
+      ${isEmpty ? `<div class="pipe-drag-hint">Arrastra aquí</div>` : ''}
     </div>`;
   }).join('') || '<div class="empty" style="grid-column:1/-1">Sin cuentas que mostrar.</div>';
 
-  // Update nav count
+  // Re-attach touch drag after render
+  initTouchDrag();
+
   const nc = document.getElementById('nav-pc');
   if (nc) nc.textContent = D.pipeline.filter(a => a.status !== 'Reorden').length;
 }
 
 function pipeCardHTML(a, col) {
   const hasWarning = a.notes && a.notes.startsWith('⚠️');
-  return `<div class="pipe-card ${hasWarning?'pipe-special':''}" onclick="editPipeCard(${a.id})">
+  return `<div class="pipe-card ${hasWarning?'pipe-special':''}"
+    draggable="true"
+    data-id="${a.id}"
+    ondragstart="onCardDragStart(event,${a.id})"
+    ondragend="onCardDragEnd(event)"
+    onclick="editPipeCard(${a.id})">
     ${hasWarning ? '<div class="pipe-special-label" style="color:#B85C00">⚠️ Requiere atención</div>' : ''}
     <div class="pipe-card-name">${a.name}</div>
     <div class="pipe-card-zone">${a.zone}</div>
@@ -1136,7 +1844,157 @@ function pipeCardHTML(a, col) {
       ${a.vol ? `<span class="pipe-tag pt-vol">${a.vol} cajas</span>` : ''}
     </div>
     ${a.next ? `<div class="pipe-card-note">→ ${a.next}</div>` : ''}
+    <div class="pipe-drag-hint" style="padding-top:5px;padding-bottom:0">⠿ Arrastra para mover</div>
   </div>`;
+}
+
+// ─── DRAG & DROP (Desktop HTML5) ───
+let dragId = null;
+
+function onCardDragStart(e, id) {
+  dragId = id;
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', id);
+  setTimeout(() => { if(e.target) e.target.classList.add('dragging'); }, 10);
+}
+
+function onCardDragEnd(e) {
+  e.target.classList.remove('dragging');
+  document.querySelectorAll('.pipe-col').forEach(c => c.classList.remove('drag-over'));
+  dragId = null;
+}
+
+function onColDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+}
+
+function onColDragEnter(e) {
+  e.preventDefault();
+  const col = e.currentTarget;
+  col.classList.add('drag-over');
+}
+
+function onColDragLeave(e) {
+  const col = e.currentTarget;
+  // Only remove if leaving to outside the column
+  if (!col.contains(e.relatedTarget)) col.classList.remove('drag-over');
+}
+
+function onColDrop(e, targetStage) {
+  e.preventDefault();
+  const col = e.currentTarget;
+  col.classList.remove('drag-over');
+  const id = parseInt(e.dataTransfer.getData('text/plain') || dragId);
+  if (!id) return;
+  movePipeCard(id, targetStage);
+}
+
+function movePipeCard(id, targetStage) {
+  const a = D.pipeline.find(a => a.id === id);
+  if (!a || a.status === targetStage) return;
+  const prevStage = a.status;
+  a.status = targetStage;
+  a.at = new Date().toISOString();
+  a.by = CU;
+
+  const msg = `📦 "${a.name}" movido: ${prevStage} → ${targetStage}`;
+  addActivity(msg, CU, false);
+
+  if (targetStage === 'Cliente activo') {
+    addNotification(`🎉 ¡Nuevo cliente activo! "${a.name}" en ${a.zone}`, 'done');
+    sendBrowserNotif('¡Nuevo cliente activo!', a.name + ' — ' + a.zone);
+    toast('🎉 ¡Nuevo cliente activo!', 'success');
+  } else {
+    toast(`${a.name} → ${targetStage}`, 'success');
+  }
+
+  save(D);
+  renderPipeline();
+  renderRecentAct();
+}
+
+// ─── DRAG & DROP (Mobile Touch) ───
+function initTouchDrag() {
+  const cards = document.querySelectorAll('.pipe-card[draggable]');
+  cards.forEach(card => {
+    card.addEventListener('touchstart', onTouchStart, {passive:false});
+    card.addEventListener('touchmove', onTouchMove, {passive:false});
+    card.addEventListener('touchend', onTouchEnd, {passive:false});
+  });
+}
+
+let touchDragId = null;
+let touchClone = null;
+let touchStartX = 0, touchStartY = 0;
+let touchMoved = false;
+let touchTimer = null;
+
+function onTouchStart(e) {
+  const card = e.currentTarget;
+  touchDragId = parseInt(card.dataset.id);
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+  touchMoved = false;
+  // Long press to activate drag (300ms)
+  touchTimer = setTimeout(() => {
+    // Create clone for visual feedback
+    touchClone = card.cloneNode(true);
+    touchClone.style.cssText = `
+      position:fixed;z-index:9999;pointer-events:none;opacity:.85;
+      width:${card.offsetWidth}px;transform:scale(1.04) rotate(1.5deg);
+      box-shadow:0 8px 24px rgba(0,0,0,.18);transition:transform .1s;
+      left:${touchStartX - card.offsetWidth/2}px;
+      top:${touchStartY - 40}px;
+    `;
+    document.body.appendChild(touchClone);
+    card.style.opacity = '.3';
+    // Haptic if available
+    if (navigator.vibrate) navigator.vibrate(30);
+  }, 300);
+}
+
+function onTouchMove(e) {
+  if (!touchDragId) return;
+  const dx = Math.abs(e.touches[0].clientX - touchStartX);
+  const dy = Math.abs(e.touches[0].clientY - touchStartY);
+  if (dx > 8 || dy > 8) { touchMoved = true; clearTimeout(touchTimer); }
+  if (!touchClone) return;
+  e.preventDefault();
+  const x = e.touches[0].clientX;
+  const y = e.touches[0].clientY;
+  touchClone.style.left = (x - touchClone.offsetWidth/2) + 'px';
+  touchClone.style.top = (y - 40) + 'px';
+  // Highlight target column
+  touchClone.style.display = 'none';
+  const el = document.elementFromPoint(x, y);
+  touchClone.style.display = '';
+  const col = el ? el.closest('.pipe-col') : null;
+  document.querySelectorAll('.pipe-col').forEach(c => c.classList.remove('drag-over'));
+  if (col) col.classList.add('drag-over');
+}
+
+function onTouchEnd(e) {
+  clearTimeout(touchTimer);
+  if (touchClone) {
+    const x = e.changedTouches[0].clientX;
+    const y = e.changedTouches[0].clientY;
+    touchClone.style.display = 'none';
+    const el = document.elementFromPoint(x, y);
+    touchClone.style.display = '';
+    const col = el ? el.closest('.pipe-col') : null;
+    if (col && touchDragId) {
+      const targetStage = col.dataset.stage;
+      if (targetStage) movePipeCard(touchDragId, targetStage);
+    }
+    touchClone.remove();
+    touchClone = null;
+    // Restore card opacity
+    document.querySelectorAll('.pipe-card').forEach(c => c.style.opacity = '');
+    document.querySelectorAll('.pipe-col').forEach(c => c.classList.remove('drag-over'));
+  }
+  touchDragId = null;
+  touchMoved = false;
 }
 
 function openPipeModal(prefill = null) {
